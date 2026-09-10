@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DataAnnotation Python Assessment Practice Quiz</title>
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-card: #334155;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --correct: #22c55e;
+      --correct-bg: rgba(34, 197, 94, 0.15);
+      --incorrect: #ef4444;
+      --incorrect-bg: rgba(239, 68, 68, 0.15);
+      --flagged: #f59e0b;
+      --border-color: #475569;
+      --code-bg: #0f172a;
+      --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-code: "Fira Code", Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f1f5f9;
+      --bg-secondary: #ffffff;
+      --bg-card: #f8fafc;
+      --text-primary: #0f172a;
+      --text-secondary: #64748b;
+      --accent: #4f46e5;
+      --accent-hover: #4338ca;
+      --correct: #16a34a;
+      --correct-bg: #dcfce7;
+      --incorrect: #dc2626;
+      --incorrect-bg: #fee2e2;
+      --flagged: #d97706;
+      --border-color: #cbd5e1;
+      --code-bg: #1e293b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      padding: 20px 10px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+    }
+
+    /* HEADER */
+    header {
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px 24px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-title h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .header-title p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-icon {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-icon:hover {
+      background-color: var(--border-color);
+    }
+
+    .timer {
+      font-family: var(--font-code);
+      font-size: 1rem;
+      font-weight: 600;
+      background: var(--bg-primary);
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+    }
+
+    /* CARDS */
+    .card {
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    /* START SCREEN */
+    .start-screen {
+      text-align: center;
+    }
+
+    .start-screen h2 {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+    }
+
+    .start-screen p {
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+      text-align: left;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    select, input {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    .btn-primary {
+      background-color: var(--accent);
+      color: #ffffff;
+      border: none;
+      padding: 12px 28px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--accent-hover);
+    }
+
+    .btn-secondary {
+      background-color: var(--bg-card);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--border-color);
+    }
+
+    /* PROGRESS BAR */
+    .progress-container {
+      margin-bottom: 20px;
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    .progress-bar-bg {
+      background-color: var(--bg-card);
+      height: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      background-color: var(--accent);
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* QUESTION DISPLAY */
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background-color: var(--bg-card);
+      color: var(--accent);
+      border: 1px solid var(--border-color);
+    }
+
+    .flag-btn {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .flag-btn.active {
+      color: var(--flagged);
+      font-weight: bold;
+    }
+
+    .question-text {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    /* CODE STYLING */
+    pre {
+      background-color: var(--code-bg);
+      color: #f8fafc;
+      padding: 14px 18px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: var(--font-code);
+      font-size: 0.95rem;
+      margin: 12px 0 20px 0;
+      border: 1px solid var(--border-color);
+    }
+
+    code {
+      font-family: var(--font-code);
+      background-color: var(--code-bg);
+      color: #38bdf8;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+
+    pre code {
+      background-color: transparent;
+      color: inherit;
+      padding: 0;
+    }
+
+    /* CHOICE BUTTONS */
+    .choices-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .choice-option {
+      background-color: var(--bg-primary);
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      padding: 14px 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      transition: all 0.2s;
+      text-align: left;
+      font-size: 1rem;
+      color: var(--text-primary);
+      width: 100%;
+    }
+
+    .choice-option:hover {
+      border-color: var(--accent);
+      background-color: var(--bg-card);
+    }
+
+    .choice-option.selected {
+      border-color: var(--accent);
+      background-color: rgba(99, 102, 241, 0.15);
+    }
+
+    .choice-option.correct {
+      border-color: var(--correct);
+      background-color: var(--correct-bg);
+    }
+
+    .choice-option.incorrect {
+      border-color: var(--incorrect);
+      background-color: var(--incorrect-bg);
+    }
+
+    .choice-letter {
+      font-weight: 700;
+      background-color: var(--bg-card);
+      color: var(--text-primary);
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 0.85rem;
+    }
+
+    .choice-option.selected .choice-letter {
+      background-color: var(--accent);
+      color: #fff;
+    }
+
+    .choice-text {
+      flex-grow: 1;
+      padding-top: 2px;
+    }
+
+    /* EXPLANATION BOX */
+    .explanation-box {
+      background-color: var(--bg-primary);
+      border-left: 4px solid var(--accent);
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 24px;
+      font-size: 0.95rem;
+    }
+
+    .explanation-title {
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--accent);
+    }
+
+    /* NAV BUTTONS */
+    .quiz-nav {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    /* QUESTION GRID MODAL */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      max-width: 600px;
+      width: 100%;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+      gap: 8px;
+      overflow-y: auto;
+      padding-right: 4px;
+      margin-bottom: 16px;
+    }
+
+    .grid-num {
+      aspect-ratio: 1;
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .grid-num.answered {
+      background-color: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .grid-num.flagged::after {
+      content: "★";
+      position: absolute;
+      top: 1px;
+      right: 3px;
+      color: var(--flagged);
+      font-size: 0.65rem;
+    }
+
+    .grid-num.current {
+      outline: 2px solid var(--text-primary);
+      outline-offset: 1px;
+    }
+
+    /* RESULTS DASHBOARD */
+    .results-score-card {
+      text-align: center;
+      padding: 32px 20px;
+    }
+
+    .score-circle {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: var(--bg-primary);
+      border: 6px solid var(--accent);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px auto;
+    }
+
+    .score-number {
+      font-size: 2.2rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .score-label {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    .score-rating {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .section-breakdown {
+      margin-top: 24px;
+      text-align: left;
+    }
+
+    .section-row {
+      margin-bottom: 14px;
+    }
+
+    .section-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+    }
+
+    .filter-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .pill {
+      padding: 6px 14px;
+      border-radius: 20px;
+      background-color: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .pill.active {
+      background-color: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        padding: 18px;
+      }
+      .header-title p {
+        display: none;
+      }
+      .quiz-nav {
+        flex-wrap: wrap;
+      }
+      .quiz-nav button {
+        flex-grow: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- HEADER -->
+    <header>
+      <div class="header-title">
+        <h1>Python Assessment Practice</h1>
+        <p>DataAnnotation Assessment Prep • 100 Qs</p>
+      </div>
+      <div class="header-actions">
+        <div id="timerDisplay" class="timer hidden">00:00</div>
+        <button id="gridToggleBtn" class="btn-icon hidden" title="Question Map">
+          <span>⠿</span> Map
+        </button>
+        <button id="themeToggleBtn" class="btn-icon" title="Toggle Theme">
+          <span>🌙</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- START SCREEN -->
+    <div id="startScreen" class="card start-screen">
+      <h2>Python Assessment Practice Quiz</h2>
+      <p>100 Multiple Choice Questions covering Pythonic Thinking, Strings & Slicing, Loops & Iterators, Dictionaries, and Functions.</p>
+
+      <div class="options-grid">
+        <div class="form-group">
+          <label for="modeSelect">Quiz Mode</label>
+          <select id="modeSelect">
+            <option value="exam">📝 Exam Mode (Results at the end)</option>
+            <option value="practice">⚡ Practice Mode (Instant feedback)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="sectionSelect">Select Section</label>
+          <select id="sectionSelect">
+            <option value="all">All Sections (100 Questions)</option>
+            <option value="1">Section 1: Pythonic Thinking (Q1-20)</option>
+            <option value="2">Section 2: Strings & Slicing (Q21-40)</option>
+            <option value="3">Section 3: Loops & Iterators (Q41-60)</option>
+            <option value="4">Section 4: Dictionaries (Q61-80)</option>
+            <option value="5">Section 5: Functions (Q81-100)</option>
+          </select>
+        </div>
+      </div>
+
+      <button id="startQuizBtn" class="btn-primary">Start Practice Quiz</button>
+    </div>
+
+    <!-- QUIZ SCREEN -->
+    <div id="quizScreen" class="hidden">
+      <div class="progress-container">
+        <div class="progress-info">
+          <span id="progressText">Question 1 of 100</span>
+          <span id="progressPercent">0%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div id="progressBarFill" class="progress-bar-fill"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="question-header">
+          <span id="sectionBadge" class="badge">Section</span>
+          <button id="flagBtn" class="flag-btn">
+            <span>★</span> Flag for Review
+          </button>
+        </div>
+
+        <div id="questionText" class="question-text"></div>
+
+        <div id="choicesList" class="choices-list"></div>
+
+        <div id="explanationBox" class="explanation-box hidden">
+          <div class="explanation-title">Explanation:</div>
+          <div id="explanationText"></div>
+        </div>
+
+        <div class="quiz-nav">
+          <button id="prevBtn" class="btn-secondary">Previous</button>
+          <button id="nextBtn" class="btn-primary">Next</button>
+          <button id="submitBtn" class="btn-primary hidden" style="background-color: var(--correct);">Submit Quiz</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULTS SCREEN -->
+    <div id="resultsScreen" class="hidden">
+      <div class="card results-score-card">
+        <h2>Quiz Completed!</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 20px;">Here is your performance summary</p>
+
+        <div class="score-circle">
+          <div id="scoreNumber" class="score-number">0%</div>
+          <div id="scoreDetail" class="score-label">0 / 100</div>
+        </div>
+
+        <div id="scoreRating" class="score-rating"></div>
+        <p id="scoreMessage" style="color: var(--text-secondary); max-width: 500px; margin: 0 auto 24px auto;"></p>
+
+        <div class="section-breakdown" id="sectionBreakdownContainer">
+          <h3>Performance by Section</h3>
+          <!-- Bars inserted via JS -->
+        </div>
+
+        <div style="margin-top: 32px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+          <button id="reviewAnswersBtn" class="btn-primary">Review Answers</button>
+          <button id="restartBtn" class="btn-secondary">Retake Quiz</button>
+        </div>
+      </div>
+
+      <!-- DETAILED REVIEW LIST -->
+      <div id="reviewContainer" class="hidden">
+        <h3 style="margin-bottom: 16px;">Detailed Question Review</h3>
+        <div class="filter-pills">
+          <button class="pill active" data-filter="all">All</button>
+          <button class="pill" data-filter="incorrect">Incorrect</button>
+          <button class="pill" data-filter="correct">Correct</button>
+          <button class="pill" data-filter="flagged">Flagged</button>
+        </div>
+
+        <div id="reviewCardsList"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUESTION MAP MODAL -->
+  <div id="gridModal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Question Navigation Map</h3>
+        <button id="closeModalBtn" class="btn-icon">✕</button>
+      </div>
+      <div id="gridContainer" class="grid-container"></div>
+      <div style="font-size: 0.8rem; color: var(--text-secondary); display: flex; gap: 12px; justify-content: center;">
+        <span><span style="color:var(--accent);">■</span> Answered</span>
+        <span><span>★</span> Flagged</span>
+        <span><span style="color:var(--text-primary);">□</span> Unanswered</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---------------------------------------------------------
+    // QUIZ DATA (100 Questions)
+    // ---------------------------------------------------------
+    const quizData = [
+      // SECTION 1
+      { id: 1, section: "Pythonic Thinking", question: "What is the \"Pythonic\" way to check if a list is empty?", options: ["if len(my_list) == 0:", "if my_list == []:", "if not my_list:", "if my_list.isEmpty():"], answer: 2, explanation: "`if not my_list:` is idiomatic Python; empty containers are falsy." },
+      { id: 2, section: "Pythonic Thinking", question: "Which is the most Pythonic way to iterate over indices and values of a list?", options: ["for i in range(len(lst)): print(i, lst[i])", "for i, val in enumerate(lst): print(i, val)", "i = 0; while i < len(lst): print(i, lst[i]); i += 1", "for val in lst: print(lst.index(val), val)"], answer: 1, explanation: "`enumerate()` is the Pythonic idiom." },
+      { id: 3, section: "Pythonic Thinking", question: "What does PEP 8 recommend for indentation?", options: ["Tabs only", "2 spaces", "4 spaces", "8 spaces"], answer: 2, explanation: "PEP 8 specifies 4 spaces per indentation level." },
+      { id: 4, section: "Pythonic Thinking", question: "What is the output of `bool([])`?", options: ["True", "False", "None", "Error"], answer: 1, explanation: "An empty list evaluates to `False` in a boolean context." },
+      { id: 5, section: "Pythonic Thinking", question: "Which is the Pythonic way to swap two variables?", options: ["temp = a; a = b; b = temp", "a, b = b, a", "a = b; b = a", "swap(a, b)"], answer: 1, explanation: "Tuple unpacking `a, b = b, a` is the standard variable swap." },
+      { id: 6, section: "Pythonic Thinking", question: "What does the walrus operator `:=` do?", options: ["Compares two values", "Assigns a value as part of an expression", "Creates a lambda", "Unpacks a tuple"], answer: 1, explanation: "Introduced in Python 3.8 for assignment expressions." },
+      { id: 7, section: "Pythonic Thinking", question: "Which is more Pythonic for combining two lists into pairs?", options: ["A manual for-loop with indices", "zip(list1, list2)", "list1 + list2", "list1.extend(list2)"], answer: 1, explanation: "`zip()` pairs elements from iterables efficiently." },
+      { id: 8, section: "Pythonic Thinking", question: "What is a \"Pythonic\" way to check membership in a collection?", options: ["for x in collection: if x == item: return True", "item in collection", "collection.contains(item)", "collection.find(item) != -1"], answer: 1, explanation: "The `in` operator is clean and readable." },
+      { id: 9, section: "Pythonic Thinking", question: "What does EAFP stand for in Python philosophy?", options: ["Easier As First Priority", "Easier to Ask Forgiveness than Permission", "Every Argument Fulfills Purpose", "Explicit Always For Programmers"], answer: 1, explanation: "Prefer try/except over pre-checking (LBYL)." },
+      { id: 10, section: "Pythonic Thinking", question: "Which of these is a \"Pythonic\" way to build a list of squares from 0-9?", options: ["A for-loop with .append()", "[x**2 for x in range(10)]", "A while-loop", "map() without converting to list"], answer: 1, explanation: "List comprehensions are preferred." },
+      { id: 11, section: "Pythonic Thinking", question: "What is the output of `list(filter(lambda x: x % 2 == 0, [1,2,3,4,5,6]))`?", options: ["[1, 3, 5]", "[2, 4, 6]", "[1, 2, 3, 4, 5, 6]", "Error"], answer: 1, explanation: "`filter()` keeps items where predicate is True." },
+      { id: 12, section: "Pythonic Thinking", question: "According to \"The Zen of Python,\" which is true?", options: ["Complex is better than complicated", "Simple is better than complex", "Implicit is better than explicit", "Sparse is worse than dense"], answer: 1, explanation: "'Simple is better than complex.'" },
+      { id: 13, section: "Pythonic Thinking", question: "What's the idiomatic way to open and safely close a file?", options: ["f = open('file.txt'); f.read(); f.close()", "with open('file.txt') as f: f.read()", "open('file.txt').read()", "try: f = open('file.txt') finally: f.close()"], answer: 1, explanation: "Context managers (`with`) ensure proper resource cleanup." },
+      { id: 14, section: "Pythonic Thinking", question: "What does `if __name__ == \"__main__\":` do?", options: ["Checks if a variable named \"main\" exists", "Ensures code only runs when the script is executed directly", "Defines the main function", "Imports the main module"], answer: 1, explanation: "Prevents execution when the file is imported as a module." },
+      { id: 15, section: "Pythonic Thinking", question: "Which is more Pythonic for string formatting (Python 3.6+)?", options: ["\"Hello, \" + name + \"!\"", "\"Hello, %s!\" % name", "f\"Hello, {name}!\"", "\"Hello, {0}!\".format(name)"], answer: 2, explanation: "f-strings are modern and preferred." },
+      { id: 16, section: "Pythonic Thinking", question: "What is a \"duck typing\" example in Python?", options: ["Checking type(obj) == list", "Using isinstance(obj, list)", "Calling obj.append() without checking its type, relying on it having that method", "Using type hints exclusively"], answer: 2, explanation: "\"If it walks like a duck...\": relying on object methods rather than explicit types." },
+      { id: 17, section: "Pythonic Thinking", question: "What does `*args` allow a function to do?", options: ["Accept keyword arguments only", "Accept a variable number of positional arguments", "Return multiple values", "Define default parameters"], answer: 1, explanation: "`*args` collects positional arguments into a tuple." },
+      { id: 18, section: "Pythonic Thinking", question: "What is the output of `any([0, '', None, False])`?", options: ["True", "False", "None", "Error"], answer: 1, explanation: "`any()` returns `True` if at least one item is truthy; all here are falsy." },
+      { id: 19, section: "Pythonic Thinking", question: "Which of the following is generally considered non-Pythonic?", options: ["Using list comprehensions for simple transformations", "Using type(x) == int instead of isinstance(x, int)", "Using context managers for file handling", "Using enumerate() in loops"], answer: 1, explanation: "`isinstance()` is preferred over `type()` because it supports inheritance." },
+      { id: 20, section: "Pythonic Thinking", question: "What does the `**kwargs` parameter allow?", options: ["Passing a variable number of keyword arguments as a dictionary", "Passing a variable number of positional arguments", "Raising an exception with keyword info", "Unpacking a list"], answer: 0, explanation: "`**kwargs` packs keyword arguments into a dictionary." },
+
+      // SECTION 2
+      { id: 21, section: "Strings & Slicing", question: "What is the output of `\"hello\"[1:4]`?", options: ["\"hell\"", "\"ell\"", "\"ello\"", "\"hel\""], answer: 1, explanation: "Slice from index 1 to 3: `'e'`, `'l'`, `'l'`." },
+      { id: 22, section: "Strings & Slicing", question: "What does `\"hello\"[::-1]` return?", options: ["\"hello\"", "\"olleh\"", "\"\"", "Error"], answer: 1, explanation: "Step `-1` reverses the string." },
+      { id: 23, section: "Strings & Slicing", question: "What is the output of `\"Python\"[-3:]`?", options: ["\"Pyt\"", "\"tho\"", "\"hon\"", "\"thon\""], answer: 2, explanation: "Index `-3` to end gets `'hon'`." },
+      { id: 24, section: "Strings & Slicing", question: "What does `\"  hello  \".strip()` return?", options: ["\"  hello  \"", "\"hello\"", "\"hello  \"", "\"  hello\""], answer: 1, explanation: "`.strip()` removes leading/trailing whitespace." },
+      { id: 25, section: "Strings & Slicing", question: "What is the result of `\"abc\" * 3`?", options: ["\"abc3\"", "\"abcabcabc\"", "Error", "9"], answer: 1, explanation: "String multiplication repeats the string." },
+      { id: 26, section: "Strings & Slicing", question: "What does `\"Hello World\".split()` return?", options: ["\"HelloWorld\"", "['Hello', 'World']", "('Hello', 'World')", "\"Hello\", \"World\""], answer: 1, explanation: "`.split()` breaks strings on whitespace into a list." },
+      { id: 27, section: "Strings & Slicing", question: "What is the output of `\"-\".join(['a', 'b', 'c'])`?", options: ["\"a-b-c\"", "\"abc\"", "['a-b-c']", "\"a-b-c-\""], answer: 0, explanation: "Joins iterable elements with separator." },
+      { id: 28, section: "Strings & Slicing", question: "What does `\"Hello\".lower()` return?", options: ["\"HELLO\"", "\"hello\"", "\"Hello\"", "Error (strings are immutable)"], answer: 1, explanation: "Returns lowercase copy of string." },
+      { id: 29, section: "Strings & Slicing", question: "What is `len(\"hello\")`?", options: ["4", "5", "6", "Error"], answer: 1, explanation: "Length is 5 characters." },
+      { id: 30, section: "Strings & Slicing", question: "What does `\"hello\".replace(\"l\", \"L\")` return?", options: ["\"heLLo\"", "\"heLo\"", "\"hello\"", "\"HeLLo\""], answer: 0, explanation: "Replaces all occurrences of `'l'` with `'L'`." },
+      { id: 31, section: "Strings & Slicing", question: "What is the output of `\"hello\"[10]`?", options: ["\"\"", "None", "IndexError", "\"o\""], answer: 2, explanation: "Out-of-bounds string indexing raises `IndexError`." },
+      { id: 32, section: "Strings & Slicing", question: "What does `\"3\" + \"4\"` evaluate to?", options: ["7", "\"34\"", "\"7\"", "TypeError"], answer: 1, explanation: "Concatenates string values." },
+      { id: 33, section: "Strings & Slicing", question: "What is `\"hello\"[2:2]`?", options: ["\"l\"", "\"\"", "\"ll\"", "Error"], answer: 1, explanation: "Empty slice when start equals stop." },
+      { id: 34, section: "Strings & Slicing", question: "What does `str.isdigit()` check?", options: ["If the string contains any digit", "If all characters in the string are digits", "If the string is a valid float", "If the string is numeric or alphabetic"], answer: 1, explanation: "Returns True if all characters are digits." },
+      { id: 35, section: "Strings & Slicing", question: "What is the output of `\"Hello\"[::2]`?", options: ["\"Hlo\"", "\"Hel\"", "\"elo\"", "\"Hello\""], answer: 0, explanation: "Step 2 selects indices 0, 2, 4 -> `'H'`, `'l'`, `'o'`." },
+      { id: 36, section: "Strings & Slicing", question: "What does `\"  \".isspace()` return?", options: ["False", "True", "None", "Error"], answer: 1, explanation: "True because string contains only whitespace." },
+      { id: 37, section: "Strings & Slicing", question: "What is the result of `f\"{3.14159:.2f}\"`?", options: ["\"3.14\"", "\"3.14159\"", "\"3.1\"", "Error"], answer: 0, explanation: "Formats float to 2 decimal places." },
+      { id: 38, section: "Strings & Slicing", question: "What does `\"Hello, World!\".find(\"World\")` return?", options: ["True", "7", "-1", "\"World\""], answer: 1, explanation: "Returns starting index of substring." },
+      { id: 39, section: "Strings & Slicing", question: "What is `\"abcdef\"[1:5:2]`?", options: ["\"bd\"", "\"bcde\"", "\"ace\"", "\"bce\""], answer: 0, explanation: "Indices 1 and 3 -> `'b'`, `'d'`." },
+      { id: 40, section: "Strings & Slicing", question: "What does `\"Hello\".startswith(\"he\")` return (case-sensitive)?", options: ["True", "False", "None", "Error"], answer: 1, explanation: "Case-sensitive comparison (`'H'` ≠ `'h'`)." },
+
+      // SECTION 3
+      { id: 41, section: "Loops & Iterators", question: "What does `range(5)` generate?", options: ["[1, 2, 3, 4, 5]", "[0, 1, 2, 3, 4]", "[0, 1, 2, 3, 4, 5]", "[1, 2, 3, 4]"], answer: 1, explanation: "Generates integers from 0 to 4." },
+      { id: 42, section: "Loops & Iterators", question: "What is the output of the following?\n```python\nfor i in range(3):\n    print(i, end=' ')\n```", options: ["0 1 2", "1 2 3", "0 1 2 3", "1 2"], answer: 0, explanation: "Outputs 0, 1, 2." },
+      { id: 43, section: "Loops & Iterators", question: "What does the `break` statement do in a loop?", options: ["Skips the current iteration", "Exits the loop entirely", "Restarts the loop", "Pauses the loop"], answer: 1, explanation: "Exits loop immediately." },
+      { id: 44, section: "Loops & Iterators", question: "What does the `continue` statement do?", options: ["Exits the loop", "Skips the rest of the current iteration and moves to the next", "Restarts the entire program", "Does nothing"], answer: 1, explanation: "Skips remaining code in iteration and moves to next step." },
+      { id: 45, section: "Loops & Iterators", question: "What is the output of:\n```python\nfor i in range(5):\n    if i == 3:\n        break\n    print(i, end=' ')\n```", options: ["0 1 2 3 4", "0 1 2", "0 1 2 3", "3"], answer: 1, explanation: "Loop breaks when `i == 3`." },
+      { id: 46, section: "Loops & Iterators", question: "What does `else` after a `for` loop execute?", options: ["Always after the loop", "Only if the loop completes without break", "Only if the loop is empty", "Never"], answer: 1, explanation: "Executes if loop finishes without hitting `break`." },
+      { id: 47, section: "Loops & Iterators", question: "What is the output of:\n```python\nfor i in range(3):\n    pass\nelse:\n    print(\"Done\")\n```", options: ["Nothing", "Done", "Error", "0 1 2 Done"], answer: 1, explanation: "Loop finishes without break, so `else` prints 'Done'." },
+      { id: 48, section: "Loops & Iterators", question: "What does `iter()` do to a list?", options: ["Sorts the list", "Returns an iterator object", "Reverses the list", "Converts it to a tuple"], answer: 1, explanation: "Returns iterator object." },
+      { id: 49, section: "Loops & Iterators", question: "What does `next()` do to an iterator?", options: ["Skips the next element", "Returns the next item from the iterator", "Restarts the iterator", "Converts iterator to list"], answer: 1, explanation: "Retrieves next item from iterator." },
+      { id: 50, section: "Loops & Iterators", question: "What happens when `next()` is called on an exhausted iterator?", options: ["Returns None", "Raises StopIteration", "Returns 0", "Loops back to start"], answer: 1, explanation: "Raises `StopIteration` error." },
+      { id: 51, section: "Loops & Iterators", question: "What is the output of `list(range(1, 10, 2))`?", options: ["[1, 3, 5, 7, 9]", "[1, 2, 3, 4, 5, 6, 7, 8, 9]", "[2, 4, 6, 8]", "[1, 3, 5, 7]"], answer: 0, explanation: "Starts at 1, step 2, up to 9." },
+      { id: 52, section: "Loops & Iterators", question: "What does a generator function use instead of `return`?", options: ["stop", "yield", "end", "output"], answer: 1, explanation: "`yield` pauses function state." },
+      { id: 53, section: "Loops & Iterators", question: "What is the output of:\n```python\ni = 0\nwhile i < 3:\n    print(i, end=' ')\n    i += 1\n```", options: ["0 1 2", "0 1 2 3", "1 2 3", "Infinite loop"], answer: 0, explanation: "Prints `0 1 2`." },
+      { id: 54, section: "Loops & Iterators", question: "Which loop type is best suited for iterating a known number of times over a sequence?", options: ["while loop", "for loop", "Recursive function", "do-while loop (doesn't exist in Python)"], answer: 1, explanation: "`for` loop is suited for sequence iteration." },
+      { id: 55, section: "Loops & Iterators", question: "What does `list(zip([1,2,3], ['a','b','c']))` produce?", options: ["[(1, 'a'), (2, 'b'), (3, 'c')]", "[1, 2, 3, 'a', 'b', 'c']", "{1: 'a', 2: 'b', 3: 'c'}", "Error"], answer: 0, explanation: "Pairs items into tuples." },
+      { id: 56, section: "Loops & Iterators", question: "What is a generator expression?", options: ["[x for x in range(5)]", "(x for x in range(5))", "{x for x in range(5)}", "{x: x for x in range(5)}"], answer: 1, explanation: "Parentheses create a generator." },
+      { id: 57, section: "Loops & Iterators", question: "What is the output of:\n```python\nfor i in range(2):\n    for j in range(2):\n        print(i, j)\n```", options: ["0 0\n0 1\n1 0\n1 1", "0 1 0 1", "0 0 1 1", "Error"], answer: 0, explanation: "Prints coordinates (0,0), (0,1), (1,0), (1,1)." },
+      { id: 58, section: "Loops & Iterators", question: "What does `reversed([1, 2, 3])` return?", options: ["A list [3, 2, 1]", "A reverse iterator object", "None", "Error"], answer: 1, explanation: "Returns reverse iterator object." },
+      { id: 59, section: "Loops & Iterators", question: "How would you iterate over a dictionary's key-value pairs?", options: ["for k, v in my_dict:", "for k, v in my_dict.items():", "for k, v in my_dict.pairs():", "for (k,v) in my_dict.list():"], answer: 1, explanation: "`.items()` yields key-value tuples." },
+      { id: 60, section: "Loops & Iterators", question: "What is the output of:\n```python\nx = [1, 2, 3]\nit = iter(x)\nprint(next(it))\nprint(next(it))\n```", options: ["1 2", "1 then 2 (on separate lines)", "[1, 2, 3]", "Error"], answer: 1, explanation: "First `next()` prints 1, second prints 2." },
+
+      // SECTION 4
+      { id: 61, section: "Dictionaries", question: "How do you create an empty dictionary?", options: ["dict = []", "dict = {}", "dict = ()", "dict = set()"], answer: 1, explanation: "`{}` creates an empty dictionary." },
+      { id: 62, section: "Dictionaries", question: "What does `my_dict.get(\"key\", \"default\")` do?", options: ["Raises an error if \"key\" doesn't exist", "Returns the value for \"key\", or \"default\" if not found", "Adds \"key\" with value \"default\"", "Deletes \"key\""], answer: 1, explanation: "Safely returns value or default if missing." },
+      { id: 63, section: "Dictionaries", question: "What happens if you access a non-existent key directly, e.g., `my_dict[\"missing\"]`?", options: ["Returns None", "Returns an empty string", "Raises KeyError", "Returns 0"], answer: 2, explanation: "Raises `KeyError`." },
+      { id: 64, section: "Dictionaries", question: "What does `my_dict.keys()` return?", options: ["A list of keys", "A view object of keys", "A tuple of keys", "A set of keys"], answer: 1, explanation: "Returns `dict_keys` view object." },
+      { id: 65, section: "Dictionaries", question: "How do you merge two dictionaries in Python 3.9+?", options: ["dict1 + dict2", "dict1 | dict2", "dict1.merge(dict2)", "dict1 & dict2"], answer: 1, explanation: "`|` operator merges dicts in Python 3.9+." },
+      { id: 66, section: "Dictionaries", question: "What does `my_dict.pop(\"key\")` do?", options: ["Returns the value and removes the key", "Only removes the key without returning", "Adds a new key", "Raises an error always"], answer: 0, explanation: "Removes key and returns its value." },
+      { id: 67, section: "Dictionaries", question: "What is the output of:\n```python\nd = {\"a\": 1, \"b\": 2}\nd[\"c\"] = 3\nprint(d)\n```", options: ["{\"a\": 1, \"b\": 2}", "{\"a\": 1, \"b\": 2, \"c\": 3}", "Error", "{\"c\": 3}"], answer: 1, explanation: "Adds key `'c'` with value 3." },
+      { id: 68, section: "Dictionaries", question: "What does `dict.fromkeys(['a', 'b'], 0)` produce?", options: ["{'a': 0, 'b': 0}", "['a', 'b']", "{0: ['a', 'b']}", "Error"], answer: 0, explanation: "Creates dict with specified keys and value." },
+      { id: 69, section: "Dictionaries", question: "Are dictionary keys required to be unique?", options: ["No, duplicates are fine", "Yes, duplicate keys overwrite previous values", "Only strings must be unique", "Yes, and duplicates raise an error"], answer: 1, explanation: "Duplicate keys overwrite existing values." },
+      { id: 70, section: "Dictionaries", question: "What is a dictionary comprehension?", options: ["{k: v for k, v in items}", "[k: v for k, v in items]", "(k: v for k, v in items)", "dict(k, v for items)"], answer: 0, explanation: "`{k: v for ...}` creates a dictionary." },
+      { id: 71, section: "Dictionaries", question: "What data types can be dictionary keys?", options: ["Any mutable type", "Any hashable (immutable) type", "Only strings", "Only integers"], answer: 1, explanation: "Keys must be hashable." },
+      { id: 72, section: "Dictionaries", question: "What does `len(my_dict)` return?", options: ["Number of keys", "Number of values", "Number of key-value pairs", "Total characters in the dict"], answer: 2, explanation: "Returns count of key-value pairs." },
+      { id: 73, section: "Dictionaries", question: "What is the output of:\n```python\nd = {\"x\": 10, \"y\": 20}\nfor k in d:\n    print(k)\n```", options: ["10 20", "x y (on separate lines)", "x: 10, y: 20", "Error"], answer: 1, explanation: "Iterating dictionary directly yields keys." },
+      { id: 74, section: "Dictionaries", question: "What does `my_dict.setdefault(\"key\", \"value\")` do?", options: ["Always overwrites \"key\" with \"value\"", "Returns existing value if key exists; otherwise sets and returns \"value\"", "Deletes the key", "Raises error if key exists"], answer: 1, explanation: "Sets default value if key is absent." },
+      { id: 75, section: "Dictionaries", question: "What is the output of:\n```python\nd = {\"a\": [1, 2], \"b\": [3, 4]}\nprint(d[\"a\"][1])\n```", options: ["1", "2", "[1, 2]", "Error"], answer: 1, explanation: "`d[\"a\"]` is `[1,2]`; index `[1]` is 2." },
+      { id: 76, section: "Dictionaries", question: "How can you check if a key exists in a dictionary?", options: ["\"key\" in my_dict", "my_dict.contains(\"key\")", "my_dict.hasKey(\"key\")", "key.in(my_dict)"], answer: 0, explanation: "Use `'key' in my_dict`." },
+      { id: 77, section: "Dictionaries", question: "What does `my_dict.values()` return?", options: ["A list of values", "A view object of values", "A dictionary of values", "A set of values"], answer: 1, explanation: "Returns `dict_values` view object." },
+      { id: 78, section: "Dictionaries", question: "What is the output of:\n```python\nd = {}\nd[\"a\"] = d.get(\"a\", 0) + 1\nprint(d)\n```", options: ["{\"a\": 1}", "{\"a\": 0}", "Error", "{}"], answer: 0, explanation: "`d.get(\"a\", 0)` returns 0; assigns 1." },
+      { id: 79, section: "Dictionaries", question: "How do you delete a key-value pair from a dictionary?", options: ["del my_dict[\"key\"]", "my_dict.remove(\"key\")", "my_dict - \"key\"", "my_dict.delete(\"key\")"], answer: 0, explanation: "`del my_dict[\"key\"]` removes entry." },
+      { id: 80, section: "Dictionaries", question: "What is the output of:\n```python\nd1 = {\"a\": 1}\nd2 = {\"a\": 2, \"b\": 3}\nd1.update(d2)\nprint(d1)\n```", options: ["{\"a\": 1, \"b\": 3}", "{\"a\": 2, \"b\": 3}", "{\"a\": 1}", "Error"], answer: 1, explanation: "`.update()` overwrites matching keys." },
+
+      // SECTION 5
+      { id: 81, section: "Functions", question: "What keyword defines a function in Python?", options: ["function", "def", "func", "define"], answer: 1, explanation: "The `def` keyword defines a function." },
+      { id: 82, section: "Functions", question: "What does a function return if there's no explicit `return` statement?", options: ["0", "\"\"", "None", "An error"], answer: 2, explanation: "Implicitly returns `None`." },
+      { id: 83, section: "Functions", question: "What is the output of:\n```python\ndef add(a, b=5):\n    return a + b\nprint(add(3))\n```", options: ["3", "5", "8", "Error"], answer: 2, explanation: "`3 + 5 = 8`." },
+      { id: 84, section: "Functions", question: "What does `*args` collect in a function definition?", options: ["A dictionary of arguments", "A tuple of positional arguments", "A list of keyword arguments", "A single argument"], answer: 1, explanation: "Collects positional arguments into tuple." },
+      { id: 85, section: "Functions", question: "What does `**kwargs` collect in a function definition?", options: ["A tuple of arguments", "A dictionary of keyword arguments", "A list of arguments", "Nothing"], answer: 1, explanation: "Collects keyword arguments into dictionary." },
+      { id: 86, section: "Functions", question: "What is a lambda function?", options: ["A multi-line function with a name", "An anonymous, single-expression function", "A function that only returns None", "A built-in Python method"], answer: 1, explanation: "Anonymous single-expression function." },
+      { id: 87, section: "Functions", question: "What is the output of:\n```python\nsquare = lambda x: x ** 2\nprint(square(4))\n```", options: ["8", "16", "4", "Error"], answer: 1, explanation: "`4 ** 2 = 16`." },
+      { id: 88, section: "Functions", question: "What is a \"closure\" in Python?", options: ["A function that closes files", "A nested function that captures variables from its enclosing scope", "A syntax error", "A type of loop"], answer: 1, explanation: "Captures variables from enclosing scope." },
+      { id: 89, section: "Functions", question: "What does the `global` keyword do inside a function?", options: ["Creates a new global variable that shadows local ones", "Allows modification of a global variable within the function", "Deletes a global variable", "Has no effect"], answer: 1, explanation: "Allows modifying module-level variable." },
+      { id: 90, section: "Functions", question: "What is the output of:\n```python\ndef foo():\n    return\nresult = foo()\nprint(result)\n```", options: ["Error", "None", "Empty string", "0"], answer: 1, explanation: "Empty return produces `None`." },
+      { id: 91, section: "Functions", question: "What is a \"docstring\"?", options: ["A comment starting with #", "A string literal used to document a function/class/module (usually triple-quoted)", "A special type of variable", "An error message"], answer: 1, explanation: "Documentation string literal." },
+      { id: 92, section: "Functions", question: "What does the `return` statement do when it executes?", options: ["Continues the loop", "Immediately exits the function and returns a value", "Prints the value", "Pauses execution"], answer: 1, explanation: "Exits function immediately." },
+      { id: 93, section: "Functions", question: "What is the output of:\n```python\ndef multi_return():\n    return 1, 2, 3\na, b, c = multi_return()\nprint(b)\n```", options: ["1", "2", "3", "Error"], answer: 1, explanation: "Unpacks tuple; `b` gets 2." },
+      { id: 94, section: "Functions", question: "What is a decorator in Python?", options: ["A comment style", "A function that modifies another function's behavior", "A type of loop", "A built-in data type"], answer: 1, explanation: "Modifies or wraps another function." },
+      { id: 95, section: "Functions", question: "What is the correct syntax for using a decorator?", options: ["@decorator_name above the function definition", "#decorator_name above the function", "decorator_name() inside the function", "use decorator_name"], answer: 0, explanation: "Uses `@decorator_name` above `def`." },
+      { id: 96, section: "Functions", question: "What does `functools.reduce()` do?", options: ["Sorts a list", "Applies a function cumulatively to items in an iterable, reducing to a single value", "Filters items from a list", "Reduces a string's length"], answer: 1, explanation: "Cumulatively reduces iterable to single value." },
+      { id: 97, section: "Functions", question: "What is the output of:\n```python\ndef outer():\n    x = 10\n    def inner():\n        nonlocal x\n        x += 5\n        return x\n    return inner()\nprint(outer())\n```", options: ["10", "15", "5", "Error"], answer: 1, explanation: "`nonlocal` updates outer `x` (`10 + 5 = 15`)." },
+      { id: 98, section: "Functions", question: "What happens if you call a function with too few required positional arguments?", options: ["It uses None for missing arguments", "TypeError is raised", "It runs with default 0 values", "SyntaxError"], answer: 1, explanation: "Raises `TypeError`." },
+      { id: 99, section: "Functions", question: "What is the output of the following code?\n```python\ndef modify_list(lst):\n    lst.append(4)\n\nmy_list = [1, 2, 3]\nmodify_list(my_list)\nprint(my_list)\n```", options: ["[1, 2, 3]", "[1, 2, 3, 4]", "[4]", "AttributeError"], answer: 1, explanation: "Lists are mutable objects in Python. Passing a list into a function passes its reference, so modifying it inside the function alters the original list in place." },
+      { id: 100, section: "Functions", question: "What does the following immediately invoked lambda expression evaluate to?\n```python\n(lambda x, y: x * y)(3, 4)\n```", options: ["12", "7", "(3, 4)", "SyntaxError"], answer: 0, explanation: "The lambda function takes two arguments x and y and returns x * y. Calling it immediately with arguments 3 and 4 evaluates to 3 * 4 = 12." }
+    ];
+
+    // ---------------------------------------------------------
+    // APPLICATION LOGIC & STATE
+    // ---------------------------------------------------------
+    let currentTheme = 'dark';
+    let quizMode = 'exam';
+    let questions = [];
+    let currentIndex = 0;
+    let userAnswers = {};
+    let flaggedQuestions = new Set();
+    let timerInterval = null;
+    let secondsElapsed = 0;
+
+    // DOM ELEMENTS
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const startQuizBtn = document.getElementById('startQuizBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const flagBtn = document.getElementById('flagBtn');
+    const gridToggleBtn = document.getElementById('gridToggleBtn');
+    const gridModal = document.getElementById('gridModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const reviewAnswersBtn = document.getElementById('reviewAnswersBtn');
+    const restartBtn = document.getElementById('restartBtn');
+
+    // THEME TOGGLE
+    themeToggleBtn.addEventListener('click', () => {
+      currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', currentTheme);
+      themeToggleBtn.querySelector('span').textContent = currentTheme === 'dark' ? '🌙' : '☀️';
+    });
+
+    // MARKDOWN & HTML ESCAPING
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function formatMarkdownCode(text) {
+      if (!text) return '';
+      let html = text.replace(/```(?:python)?\s*([\s\S]*?)```/g, (match, code) => {
+        return `<pre><code>${escapeHtml(code.trim())}</code></pre>`;
+      });
+      html = html.replace(/`([^`]+)`/g, (match, code) => {
+        return `<code>${escapeHtml(code)}</code>`;
+      });
+      const parts = html.split(/(<pre>[\s\S]*?<\/pre>)/g);
+      return parts.map(part => {
+        if (part.startsWith('<pre>')) return part;
+        return part.replace(/\n/g, '<br>');
+      }).join('');
+    }
+
+    // TIMER
+    function startTimer() {
+      stopTimer();
+      secondsElapsed = 0;
+      updateTimerDisplay();
+      timerInterval = setInterval(() => {
+        secondsElapsed++;
+        updateTimerDisplay();
+      }, 1000);
+    }
+
+    function stopTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+    }
+
+    function updateTimerDisplay() {
+      const mins = Math.floor(secondsElapsed / 60);
+      const secs = secondsElapsed % 60;
+      document.getElementById('timerDisplay').textContent = 
+        `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
+    // START QUIZ
+    startQuizBtn.addEventListener('click', startQuiz);
+
+    function startQuiz() {
+      quizMode = document.getElementById('modeSelect').value;
+      const sectionVal = document.getElementById('sectionSelect').value;
+
+      const sectionMap = {
+        '1': 'Pythonic Thinking',
+        '2': 'Strings & Slicing',
+        '3': 'Loops & Iterators',
+        '4': 'Dictionaries',
+        '5': 'Functions'
+      };
+
+      if (sectionVal === 'all') {
+        questions = [...quizData];
+      } else {
+        questions = quizData.filter(q => q.section === sectionMap[sectionVal]);
+      }
+
+      currentIndex = 0;
+      userAnswers = {};
+      flaggedQuestions.clear();
+
+      document.getElementById('startScreen').classList.add('hidden');
+      document.getElementById('resultsScreen').classList.add('hidden');
+      document.getElementById('quizScreen').classList.remove('hidden');
+      document.getElementById('timerDisplay').classList.remove('hidden');
+      document.getElementById('gridToggleBtn').classList.remove('hidden');
+
+      startTimer();
+      loadQuestion(0);
+    }
+
+    // LOAD QUESTION
+    function loadQuestion(index) {
+      currentIndex = index;
+      const q = questions[currentIndex];
+
+      const total = questions.length;
+      const pct = Math.round(((currentIndex + 1) / total) * 100);
+      document.getElementById('progressText').textContent = `Question ${currentIndex + 1} of ${total}`;
+      document.getElementById('progressPercent').textContent = `${pct}%`;
+      document.getElementById('progressBarFill').style.width = `${pct}%`;
+
+      document.getElementById('sectionBadge').textContent = q.section;
+      if (flaggedQuestions.has(q.id)) {
+        flagBtn.classList.add('active');
+        flagBtn.innerHTML = '<span>★</span> Flagged';
+      } else {
+        flagBtn.classList.remove('active');
+        flagBtn.innerHTML = '<span>★</span> Flag for Review';
+      }
+
+      document.getElementById('questionText').innerHTML = formatMarkdownCode(q.question);
+
+      const choicesList = document.getElementById('choicesList');
+      choicesList.innerHTML = '';
+
+      const selectedAnswer = userAnswers[q.id];
+      const letters = ['A', 'B', 'C', 'D'];
+
+      q.options.forEach((optText, optIdx) => {
+        const btn = document.createElement('button');
+        btn.className = 'choice-option';
+        
+        let optionClass = '';
+        if (quizMode === 'practice' && selectedAnswer !== undefined) {
+          if (optIdx === q.answer) {
+            optionClass = 'correct';
+          } else if (optIdx === selectedAnswer && selectedAnswer !== q.answer) {
+            optionClass = 'incorrect';
+          }
+        } else if (selectedAnswer === optIdx) {
+          optionClass = 'selected';
+        }
+
+        if (optionClass) btn.classList.add(optionClass);
+
+        btn.innerHTML = `
+          <span class="choice-letter">${letters[optIdx]}</span>
+          <span class="choice-text">${formatMarkdownCode(optText)}</span>
+        `;
+
+        btn.addEventListener('click', () => handleChoiceSelect(optIdx));
+        choicesList.appendChild(btn);
+      });
+
+      const expBox = document.getElementById('explanationBox');
+      if (quizMode === 'practice' && selectedAnswer !== undefined) {
+        expBox.classList.remove('hidden');
+        document.getElementById('explanationText').innerHTML = formatMarkdownCode(q.explanation);
+      } else {
+        expBox.classList.add('hidden');
+      }
+
+      if (currentIndex === 0) {
+        prevBtn.style.visibility = 'hidden';
+      } else {
+        prevBtn.style.visibility = 'visible';
+      }
+
+      if (currentIndex === total - 1) {
+        nextBtn.classList.add('hidden');
+        submitBtn.classList.remove('hidden');
+      } else {
+        nextBtn.classList.remove('hidden');
+        submitBtn.classList.add('hidden');
+      }
+    }
+
+    function handleChoiceSelect(optIdx) {
+      const q = questions[currentIndex];
+      if (quizMode === 'practice' && userAnswers[q.id] !== undefined) return;
+
+      userAnswers[q.id] = optIdx;
+      loadQuestion(currentIndex);
+    }
+
+    flagBtn.addEventListener('click', () => {
+      const q = questions[currentIndex];
+      if (flaggedQuestions.has(q.id)) {
+        flaggedQuestions.delete(q.id);
+      } else {
+        flaggedQuestions.add(q.id);
+      }
+      loadQuestion(currentIndex);
+    });
+
+    prevBtn.addEventListener('click', () => {
+      if (currentIndex > 0) loadQuestion(currentIndex - 1);
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (currentIndex < questions.length - 1) loadQuestion(currentIndex + 1);
+    });
+
+    submitBtn.addEventListener('click', finishQuiz);
+
+    gridToggleBtn.addEventListener('click', () => {
+      renderGridModal();
+      gridModal.classList.add('open');
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+      gridModal.classList.remove('open');
+    });
+
+    gridModal.addEventListener('click', (e) => {
+      if (e.target === gridModal) gridModal.classList.remove('open');
+    });
+
+    function renderGridModal() {
+      const gridContainer = document.getElementById('gridContainer');
+      gridContainer.innerHTML = '';
+
+      questions.forEach((q, idx) => {
+        const item = document.createElement('div');
+        item.className = 'grid-num';
+        if (idx === currentIndex) item.classList.add('current');
+        if (userAnswers[q.id] !== undefined) item.classList.add('answered');
+        if (flaggedQuestions.has(q.id)) item.classList.add('flagged');
+
+        item.textContent = idx + 1;
+        item.addEventListener('click', () => {
+          gridModal.classList.remove('open');
+          loadQuestion(idx);
+        });
+        gridContainer.appendChild(item);
+      });
+    }
+
+    function finishQuiz() {
+      stopTimer();
+
+      document.getElementById('quizScreen').classList.add('hidden');
+      document.getElementById('timerDisplay').classList.add('hidden');
+      document.getElementById('gridToggleBtn').classList.add('hidden');
+      document.getElementById('resultsScreen').classList.remove('hidden');
+
+      let correctCount = 0;
+      questions.forEach(q => {
+        if (userAnswers[q.id] === q.answer) {
+          correctCount++;
+        }
+      });
+
+      const total = questions.length;
+      const percentage = Math.round((correctCount / total) * 100);
+
+      document.getElementById('scoreNumber').textContent = `${percentage}%`;
+      document.getElementById('scoreDetail').textContent = `${correctCount} / ${total}`;
+
+      let rating = '';
+      let msg = '';
+      if (percentage >= 90) {
+        rating = '🌟 Exceptional Performance!';
+        msg = 'Outstanding work! You demonstrate a deep, mastery-level understanding of Python principles and syntax.';
+      } else if (percentage >= 75) {
+        rating = '👍 Strong Result!';
+        msg = 'Great job! You have a solid grasp of core Python concepts. Review missed items below to polish up.';
+      } else if (percentage >= 60) {
+        rating = '📈 Good Foundation!';
+        msg = 'You passed, but there are key gaps in your concepts. Review the detailed breakdown and explanations below.';
+      } else {
+        rating = '📚 Practice Needed';
+        msg = 'Keep studying! Focus on the concepts where you missed questions and try taking the practice quiz again.';
+      }
+
+      document.getElementById('scoreRating').textContent = rating;
+      document.getElementById('scoreMessage').textContent = msg;
+
+      renderSectionBreakdown();
+      document.getElementById('reviewContainer').classList.add('hidden');
+    }
+
+    function renderSectionBreakdown() {
+      const breakdownContainer = document.getElementById('sectionBreakdownContainer');
+      breakdownContainer.innerHTML = '<h3>Performance by Section</h3>';
+
+      const sectionsMap = {};
+      questions.forEach(q => {
+        if (!sectionsMap[q.section]) {
+          sectionsMap[q.section] = { total: 0, correct: 0 };
+        }
+        sectionsMap[q.section].total++;
+        if (userAnswers[q.id] === q.answer) {
+          sectionsMap[q.section].correct++;
+        }
+      });
+
+      for (const [sectionName, stats] of Object.entries(sectionsMap)) {
+        const secPct = Math.round((stats.correct / stats.total) * 100);
+        const row = document.createElement('div');
+        row.className = 'section-row';
+        row.innerHTML = `
+          <div class="section-meta">
+            <span>${sectionName}</span>
+            <span>${stats.correct}/${stats.total} (${secPct}%)</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" style="width: ${secPct}%;"></div>
+          </div>
+        `;
+        breakdownContainer.appendChild(row);
+      }
+    }
+
+    reviewAnswersBtn.addEventListener('click', () => {
+      const reviewContainer = document.getElementById('reviewContainer');
+      reviewContainer.classList.toggle('hidden');
+      if (!reviewContainer.classList.contains('hidden')) {
+        renderReviewCards('all');
+        reviewContainer.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+
+    restartBtn.addEventListener('click', () => {
+      document.getElementById('resultsScreen').classList.add('hidden');
+      document.getElementById('startScreen').classList.remove('hidden');
+    });
+
+    const pills = document.querySelectorAll('.filter-pills .pill');
+    pills.forEach(pill => {
+      pill.addEventListener('click', (e) => {
+        pills.forEach(p => p.classList.remove('active'));
+        e.target.classList.add('active');
+        renderReviewCards(e.target.dataset.filter);
+      });
+    });
+
+    function renderReviewCards(filter) {
+      const container = document.getElementById('reviewCardsList');
+      container.innerHTML = '';
+
+      const letters = ['A', 'B', 'C', 'D'];
+
+      questions.forEach((q, idx) => {
+        const userChoice = userAnswers[q.id];
+        const isCorrect = userChoice === q.answer;
+        const isFlagged = flaggedQuestions.has(q.id);
+
+        if (filter === 'correct' && !isCorrect) return;
+        if (filter === 'incorrect' && isCorrect) return;
+        if (filter === 'flagged' && !isFlagged) return;
+
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.style.marginBottom = '16px';
+
+        let choicesHtml = '';
+        q.options.forEach((opt, oIdx) => {
+          let optClass = '';
+          if (oIdx === q.answer) optClass = 'correct';
+          else if (oIdx === userChoice && !isCorrect) optClass = 'incorrect';
+
+          choicesHtml += `
+            <div class="choice-option ${optClass}" style="cursor: default;">
+              <span class="choice-letter">${letters[oIdx]}</span>
+              <span class="choice-text">${formatMarkdownCode(opt)}</span>
+            </div>
+          `;
+        });
+
+        const userStatusText = userChoice === undefined 
+          ? '<span style="color: var(--text-secondary);">Unanswered</span>'
+          : isCorrect 
+            ? '<span style="color: var(--correct);">Correct</span>' 
+            : '<span style="color: var(--incorrect);">Incorrect</span>';
+
+        card.innerHTML = `
+          <div class="question-header">
+            <span class="badge">${q.section} • Q${idx + 1}</span>
+            <span style="font-size: 0.9rem;">${isFlagged ? '★ Flagged • ' : ''}${userStatusText}</span>
+          </div>
+          <div class="question-text">${formatMarkdownCode(q.question)}</div>
+          <div class="choices-list">${choicesHtml}</div>
+          <div class="explanation-box" style="margin-bottom: 0;">
+            <div class="explanation-title">Explanation:</div>
+            <div>${formatMarkdownCode(q.explanation)}</div>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+  </script>
+</body>
+</html>
