@@ -1,0 +1,2444 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DataAnnotation Python Assessment Practice Quiz</title>
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-card: #334155;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --correct: #22c55e;
+      --correct-bg: rgba(34, 197, 94, 0.15);
+      --incorrect: #ef4444;
+      --incorrect-bg: rgba(239, 68, 68, 0.15);
+      --flagged: #f59e0b;
+      --border-color: #475569;
+      --code-bg: #0f172a;
+      --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-code: "Fira Code", Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f1f5f9;
+      --bg-secondary: #ffffff;
+      --bg-card: #f8fafc;
+      --text-primary: #0f172a;
+      --text-secondary: #64748b;
+      --accent: #4f46e5;
+      --accent-hover: #4338ca;
+      --correct: #16a34a;
+      --correct-bg: #dcfce7;
+      --incorrect: #dc2626;
+      --incorrect-bg: #fee2e2;
+      --flagged: #d97706;
+      --border-color: #cbd5e1;
+      --code-bg: #1e293b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      padding: 20px 10px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+    }
+
+    /* HEADER */
+    header {
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px 24px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-title h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .header-title p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-icon {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-icon:hover {
+      background-color: var(--border-color);
+    }
+
+    .timer {
+      font-family: var(--font-code);
+      font-size: 1rem;
+      font-weight: 600;
+      background: var(--bg-primary);
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+    }
+
+    /* CARDS */
+    .card {
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    /* START SCREEN */
+    .start-screen {
+      text-align: center;
+    }
+
+    .start-screen h2 {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+    }
+
+    .start-screen p {
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+      text-align: left;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    select, input {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    .btn-primary {
+      background-color: var(--accent);
+      color: #ffffff;
+      border: none;
+      padding: 12px 28px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--accent-hover);
+    }
+
+    .btn-secondary {
+      background-color: var(--bg-card);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--border-color);
+    }
+
+    /* PROGRESS BAR */
+    .progress-container {
+      margin-bottom: 20px;
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    .progress-bar-bg {
+      background-color: var(--bg-card);
+      height: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      background-color: var(--accent);
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* QUESTION DISPLAY */
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background-color: var(--bg-card);
+      color: var(--accent);
+      border: 1px solid var(--border-color);
+    }
+
+    .flag-btn {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .flag-btn.active {
+      color: var(--flagged);
+      font-weight: bold;
+    }
+
+    .question-text {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    /* CODE STYLING */
+    pre {
+      background-color: var(--code-bg);
+      color: #f8fafc;
+      padding: 14px 18px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: var(--font-code);
+      font-size: 0.95rem;
+      margin: 12px 0 20px 0;
+      border: 1px solid var(--border-color);
+    }
+
+    code {
+      font-family: var(--font-code);
+      background-color: var(--code-bg);
+      color: #38bdf8;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+
+    pre code {
+      background-color: transparent;
+      color: inherit;
+      padding: 0;
+    }
+
+    /* CHOICE BUTTONS */
+    .choices-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .choice-option {
+      background-color: var(--bg-primary);
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      padding: 14px 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      transition: all 0.2s;
+      text-align: left;
+      font-size: 1rem;
+      color: var(--text-primary);
+      width: 100%;
+    }
+
+    .choice-option:hover {
+      border-color: var(--accent);
+      background-color: var(--bg-card);
+    }
+
+    .choice-option.selected {
+      border-color: var(--accent);
+      background-color: rgba(99, 102, 241, 0.15);
+    }
+
+    .choice-option.correct {
+      border-color: var(--correct);
+      background-color: var(--correct-bg);
+    }
+
+    .choice-option.incorrect {
+      border-color: var(--incorrect);
+      background-color: var(--incorrect-bg);
+    }
+
+    .choice-letter {
+      font-weight: 700;
+      background-color: var(--bg-card);
+      color: var(--text-primary);
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 0.85rem;
+    }
+
+    .choice-option.selected .choice-letter {
+      background-color: var(--accent);
+      color: #fff;
+    }
+
+    .choice-text {
+      flex-grow: 1;
+      padding-top: 2px;
+    }
+
+    /* EXPLANATION BOX */
+    .explanation-box {
+      background-color: var(--bg-primary);
+      border-left: 4px solid var(--accent);
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 24px;
+      font-size: 0.95rem;
+    }
+
+    .explanation-title {
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--accent);
+    }
+
+    /* NAV BUTTONS */
+    .quiz-nav {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    /* QUESTION GRID MODAL */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      max-width: 600px;
+      width: 100%;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+      gap: 8px;
+      overflow-y: auto;
+      padding-right: 4px;
+      margin-bottom: 16px;
+    }
+
+    .grid-num {
+      aspect-ratio: 1;
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .grid-num.answered {
+      background-color: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .grid-num.flagged::after {
+      content: "★";
+      position: absolute;
+      top: 1px;
+      right: 3px;
+      color: var(--flagged);
+      font-size: 0.65rem;
+    }
+
+    .grid-num.current {
+      outline: 2px solid var(--text-primary);
+      outline-offset: 1px;
+    }
+
+    /* RESULTS DASHBOARD */
+    .results-score-card {
+      text-align: center;
+      padding: 32px 20px;
+    }
+
+    .score-circle {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: var(--bg-primary);
+      border: 6px solid var(--accent);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px auto;
+    }
+
+    .score-number {
+      font-size: 2.2rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .score-label {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    .score-rating {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .section-breakdown {
+      margin-top: 24px;
+      text-align: left;
+    }
+
+    .section-row {
+      margin-bottom: 14px;
+    }
+
+    .section-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+    }
+
+    .filter-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .pill {
+      padding: 6px 14px;
+      border-radius: 20px;
+      background-color: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .pill.active {
+      background-color: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        padding: 18px;
+      }
+      .header-title p {
+        display: none;
+      }
+      .quiz-nav {
+        flex-wrap: wrap;
+      }
+      .quiz-nav button {
+        flex-grow: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- HEADER -->
+    <header>
+      <div class="header-title">
+        <h1>Advanced Python Assessment</h1>
+        <p>DataAnnotation Assessment Prep • 100 Qs</p>
+      </div>
+      <div class="header-actions">
+        <div id="timerDisplay" class="timer hidden">00:00</div>
+        <button id="gridToggleBtn" class="btn-icon hidden" title="Question Map">
+          <span>⠿</span> Map
+        </button>
+        <button id="themeToggleBtn" class="btn-icon" title="Toggle Theme">
+          <span>🌙</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- START SCREEN -->
+    <div id="startScreen" class="card start-screen">
+      <h2>Advanced DataAnnotation Python Quiz</h2>
+      <p>100 Challenging Multiple Choice Questions covering Pythonic Thinking, Strings & Slicing, Loops & Iterators, Dictionaries, and Functions.</p>
+
+      <div class="options-grid">
+        <div class="form-group">
+          <label for="modeSelect">Quiz Mode</label>
+          <select id="modeSelect">
+            <option value="exam">📝 Exam Mode (Results at the end)</option>
+            <option value="practice">⚡ Practice Mode (Instant feedback)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="sectionSelect">Select Section</label>
+          <select id="sectionSelect">
+            <option value="all">All Sections (100 Questions)</option>
+            <option value="1">Section 1: Pythonic Thinking (Q1-20)</option>
+            <option value="2">Section 2: Strings & Slicing (Q21-40)</option>
+            <option value="3">Section 3: Loops & Iterators (Q41-60)</option>
+            <option value="4">Section 4: Dictionaries (Q61-80)</option>
+            <option value="5">Section 5: Functions (Q81-100)</option>
+          </select>
+        </div>
+      </div>
+
+      <button id="startQuizBtn" class="btn-primary">Start Practice Quiz</button>
+    </div>
+
+    <!-- QUIZ SCREEN -->
+    <div id="quizScreen" class="hidden">
+      <div class="progress-container">
+        <div class="progress-info">
+          <span id="progressText">Question 1 of 100</span>
+          <span id="progressPercent">0%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div id="progressBarFill" class="progress-bar-fill"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="question-header">
+          <span id="sectionBadge" class="badge">Section</span>
+          <button id="flagBtn" class="flag-btn">
+            <span>★</span> Flag for Review
+          </button>
+        </div>
+
+        <div id="questionText" class="question-text"></div>
+
+        <div id="choicesList" class="choices-list"></div>
+
+        <div id="explanationBox" class="explanation-box hidden">
+          <div class="explanation-title">Explanation:</div>
+          <div id="explanationText"></div>
+        </div>
+
+        <div class="quiz-nav">
+          <button id="prevBtn" class="btn-secondary">Previous</button>
+          <button id="nextBtn" class="btn-primary">Next</button>
+          <button id="submitBtn" class="btn-primary hidden" style="background-color: var(--correct);">Submit Quiz</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULTS SCREEN -->
+    <div id="resultsScreen" class="hidden">
+      <div class="card results-score-card">
+        <h2>Quiz Completed!</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 20px;">Here is your performance summary</p>
+
+        <div class="score-circle">
+          <div id="scoreNumber" class="score-number">0%</div>
+          <div id="scoreDetail" class="score-label">0 / 100</div>
+        </div>
+
+        <div id="scoreRating" class="score-rating"></div>
+        <p id="scoreMessage" style="color: var(--text-secondary); max-width: 500px; margin: 0 auto 24px auto;"></p>
+
+        <div class="section-breakdown" id="sectionBreakdownContainer">
+          <h3>Performance by Section</h3>
+          <!-- Bars inserted via JS -->
+        </div>
+
+        <div style="margin-top: 32px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+          <button id="reviewAnswersBtn" class="btn-primary">Review Answers</button>
+          <button id="restartBtn" class="btn-secondary">Retake Quiz</button>
+        </div>
+      </div>
+
+      <!-- DETAILED REVIEW LIST -->
+      <div id="reviewContainer" class="hidden">
+        <h3 style="margin-bottom: 16px;">Detailed Question Review</h3>
+        <div class="filter-pills">
+          <button class="pill active" data-filter="all">All</button>
+          <button class="pill" data-filter="incorrect">Incorrect</button>
+          <button class="pill" data-filter="correct">Correct</button>
+          <button class="pill" data-filter="flagged">Flagged</button>
+        </div>
+
+        <div id="reviewCardsList"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUESTION MAP MODAL -->
+  <div id="gridModal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Question Navigation Map</h3>
+        <button id="closeModalBtn" class="btn-icon">✕</button>
+      </div>
+      <div id="gridContainer" class="grid-container"></div>
+      <div style="font-size: 0.8rem; color: var(--text-secondary); display: flex; gap: 12px; justify-content: center;">
+        <span><span style="color:var(--accent);">■</span> Answered</span>
+        <span><span>★</span> Flagged</span>
+        <span><span style="color:var(--text-primary);">□</span> Unanswered</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---------------------------------------------------------
+    // QUIZ DATA (100 Questions)
+    // ---------------------------------------------------------
+const quizData = [
+  {
+    "id": 1,
+    "section": "Pythonic Thinking",
+    "question": "**Preserving order while removing duplicates**\n\nWhich expression removes duplicates while preserving the first occurrence of each item?\n\n```python\nitems = [\"b\", \"a\", \"b\", \"c\", \"a\"]\n```",
+    "options": [
+      "`list(set(items))`",
+      "`sorted(set(items))`",
+      "`list(dict.fromkeys(items))`",
+      "`[x for x in items if items.count(x) == 1]`"
+    ],
+    "answer": 2,
+    "explanation": "Dictionaries preserve insertion order, and keys are unique."
+  },
+  {
+    "id": 2,
+    "section": "Pythonic Thinking",
+    "question": "**Short-circuit evaluation**\n\nWhat is printed?\n\n```python\ndef check(x):\n    print(x, end=\" \")\n    return x > 2\n\nresult = any(check(x) for x in [1, 3, 5])\nprint(result)\n```",
+    "options": [
+      "`1 3 5 True`",
+      "`1 3 True`",
+      "`1 3 5 False`",
+      "`1 True`"
+    ],
+    "answer": 1,
+    "explanation": "`any()` stops when `check(3)` returns true, so `5` is never checked."
+  },
+  {
+    "id": 3,
+    "section": "Pythonic Thinking",
+    "question": "**Repeated mutable objects**\n\nWhat is the value of `rows`?\n\n```python\nrows = [[]] * 3\nrows[0].append(\"x\")\n```",
+    "options": [
+      "`[['x'], [], []]`",
+      "`[['x'], ['x'], ['x']]`",
+      "`[['x']]`",
+      "Raises `TypeError`"
+    ],
+    "answer": 1,
+    "explanation": "List multiplication repeats references to the same inner list."
+  },
+  {
+    "id": 4,
+    "section": "Pythonic Thinking",
+    "question": "**Sorting by multiple criteria**\n\nYou want records sorted by descending score, then ascending name. Which is correct?\n\n```python\nrecords = [\n    {\"name\": \"Zoe\", \"score\": 90},\n    {\"name\": \"Amy\", \"score\": 90},\n    {\"name\": \"Max\", \"score\": 80},\n]\n```",
+    "options": [
+      "`sorted(records, key=lambda r: (r[\"score\"], r[\"name\"]))`",
+      "`sorted(records, key=lambda r: (-r[\"score\"], r[\"name\"]))`",
+      "`sorted(records, key=lambda r: (r[\"score\"], r[\"name\"]), reverse=True)`",
+      "`records.sort(key=\"score\", reverse=True)`"
+    ],
+    "answer": 1,
+    "explanation": "Negative score gives descending numeric order; name remains ascending."
+  },
+  {
+    "id": 5,
+    "section": "Pythonic Thinking",
+    "question": "**Nested comprehension order**\n\nWhat is the result?\n\n```python\n[(x, y) for x in range(3) for y in range(x)]\n```",
+    "options": [
+      "`[(0, 0), (1, 0), (2, 0)]`",
+      "`[(1, 0), (2, 0), (2, 1)]`",
+      "`[(0, 1), (0, 2), (1, 2)]`",
+      "`[(1, 1), (2, 2)]`"
+    ],
+    "answer": 1,
+    "explanation": "`range(0)` is empty, `range(1)` gives `0`, and `range(2)` gives `0, 1`."
+  },
+  {
+    "id": 6,
+    "section": "Pythonic Thinking",
+    "question": "**Vacuous truth**\n\nWhat is the result?\n\n```python\nall(x > 0 for x in [])\n```",
+    "options": [
+      "`False`",
+      "`True`",
+      "`None`",
+      "Raises `ValueError`"
+    ],
+    "answer": 1,
+    "explanation": "`all()` over an empty iterable is true."
+  },
+  {
+    "id": 7,
+    "section": "Pythonic Thinking",
+    "question": "**Aliasing and augmented assignment**\n\nWhat is printed?\n\n```python\na = b = [1]\na += [2]\nprint(a, b, a is b)\n```",
+    "options": [
+      "`[1, 2] [1] False`",
+      "`[1, 2] [1, 2] True`",
+      "`[1, 2] [1, 2] False`",
+      "Raises `TypeError`"
+    ],
+    "answer": 1,
+    "explanation": "List `+=` mutates the shared list in place."
+  },
+  {
+    "id": 8,
+    "section": "Pythonic Thinking",
+    "question": "**Immutable augmented assignment**\n\nWhat is printed?\n\n```python\na = b = (1,)\na += (2,)\nprint(a, b, a is b)\n```",
+    "options": [
+      "`(1, 2) (1, 2) True`",
+      "`(1, 2) (1,) False`",
+      "`(1,) (1,) True`",
+      "Raises `TypeError`"
+    ],
+    "answer": 1,
+    "explanation": "Tuples are immutable, so `a += ...` creates and assigns a new tuple."
+  },
+  {
+    "id": 9,
+    "section": "Pythonic Thinking",
+    "question": "**EAFP**\n\nWhich implementation most directly follows Python’s EAFP style?",
+    "options": [
+      "```python\n  if key in data:\n      value = data[key]\n  else:\n      value = 0\n  ```",
+      "```python\n  try:\n      value = data[key]\n  except KeyError:\n      value = 0\n  ```",
+      "```python\n  value = data.keys().find(key)\n  ```",
+      "```python\n  value = 0 if not data else data[key]\n  ```"
+    ],
+    "answer": 1,
+    "explanation": "EAFP performs the operation and handles the expected exception."
+  },
+  {
+    "id": 10,
+    "section": "Pythonic Thinking",
+    "question": "**Counting true conditions**\n\nWhat is the value of `count`?\n\n```python\nvalues = [0, 1, \"\", \"x\", [], [2], None]\ncount = sum(bool(x) for x in values)\n```",
+    "options": [
+      "`2`",
+      "`3`",
+      "`4`",
+      "`7`"
+    ],
+    "answer": 1,
+    "explanation": "The truthy values are `1`, `\"x\"`, and `[2]`."
+  },
+  {
+    "id": 11,
+    "section": "Pythonic Thinking",
+    "question": "**Extended unpacking**\n\nWhat is printed?\n\n```python\nfirst, *middle, last = range(5)\nprint(first, middle, last)\n```",
+    "options": [
+      "`0 [1, 2, 3] 4`",
+      "`0 (1, 2, 3) 4`",
+      "`0 [1, 2, 3, 4] 5`",
+      "Raises `ValueError`"
+    ],
+    "answer": 0,
+    "explanation": "Starred assignment collects the middle values into a list."
+  },
+  {
+    "id": 12,
+    "section": "Pythonic Thinking",
+    "question": "**Shallow copying**\n\nWhat is printed?\n\n```python\noriginal = [[1], [2]]\ncopied = original[:]\n\ncopied[0].append(9)\ncopied.append([3])\n\nprint(original)\n```",
+    "options": [
+      "`[[1], [2]]`",
+      "`[[1, 9], [2], [3]]`",
+      "`[[1, 9], [2]]`",
+      "`[[1], [2], [3]]`"
+    ],
+    "answer": 2,
+    "explanation": "The outer list is copied, but its nested lists remain shared."
+  },
+  {
+    "id": 13,
+    "section": "Pythonic Thinking",
+    "question": "**Selecting a safe default**\n\nWhat is the result?\n\n```python\nmin([], default=0)\n```",
+    "options": [
+      "`None`",
+      "`0`",
+      "`[]`",
+      "Raises `ValueError`"
+    ],
+    "answer": 1,
+    "explanation": "The `default` argument is returned for an empty iterable."
+  },
+  {
+    "id": 14,
+    "section": "Pythonic Thinking",
+    "question": "**Comprehension scope**\n\nWhat is printed in Python 3?\n\n```python\nx = 10\nvalues = [x * 2 for x in range(3)]\nprint(x, values)\n```",
+    "options": [
+      "`2 [0, 2, 4]`",
+      "`10 [0, 2, 4]`",
+      "`10 [20, 20, 20]`",
+      "Raises `UnboundLocalError`"
+    ],
+    "answer": 1,
+    "explanation": "A comprehension’s loop variable does not overwrite the outer `x` in Python 3."
+  },
+  {
+    "id": 15,
+    "section": "Pythonic Thinking",
+    "question": "**Lazy conditional expressions**\n\nWhat is printed?\n\n```python\ndef left():\n    print(\"L\", end=\"\")\n    return 1\n\ndef right():\n    print(\"R\", end=\"\")\n    return 2\n\nvalue = left() if False else right()\nprint(value)\n```",
+    "options": [
+      "`LR1`",
+      "`LR2`",
+      "`R2`",
+      "`L1`"
+    ],
+    "answer": 2,
+    "explanation": "Only the selected branch is evaluated."
+  },
+  {
+    "id": 16,
+    "section": "Pythonic Thinking",
+    "question": "**Chained comparisons**\n\nWhich expression checks that `x` is strictly between 0 and 10 without evaluating `x` twice?",
+    "options": [
+      "`0 < x and x < 10`",
+      "`0 < x < 10`",
+      "`x in range(1, 10)`",
+      "Both A and B, but B is the direct chained-comparison idiom"
+    ],
+    "answer": 3,
+    "explanation": "Both work, but chained comparisons directly express the intent and evaluate the middle expression once."
+  },
+  {
+    "id": 17,
+    "section": "Pythonic Thinking",
+    "question": "**Avoiding side effects in comprehensions**\n\nYou need to remove duplicates case-insensitively while preserving the original spelling of the first occurrence. Which is clearest and safest?",
+    "options": [
+      "```python\n  result = list(set(words))\n  ```",
+      "```python\n  result = list({w.lower(): w for w in words}.values())\n  ```",
+      "```python\n  seen = set()\n  result = []\n  for word in words:\n      key = word.casefold()\n      if key not in seen:\n          seen.add(key)\n          result.append(word)\n  ```",
+      "```python\n  result = sorted(words, key=str.lower)\n  ```"
+    ],
+    "answer": 2,
+    "explanation": "It preserves the first original spelling and avoids hidden side effects."
+  },
+  {
+    "id": 18,
+    "section": "Pythonic Thinking",
+    "question": "**Equality versus identity**\n\nWhich statement is generally correct?",
+    "options": [
+      "Use `is` whenever two values should be equal.",
+      "Use `==` for `None`.",
+      "Use `is` for singleton identity checks such as `x is None`.",
+      "`is` and `==` are interchangeable for immutable values."
+    ],
+    "answer": 2,
+    "explanation": "Identity is appropriate for singleton objects such as `None`."
+  },
+  {
+    "id": 19,
+    "section": "Pythonic Thinking",
+    "question": "**Simultaneous assignment**\n\nWhat is printed?\n\n```python\nx = 1\nx, y = x + 1, x + 2\nprint(x, y)\n```",
+    "options": [
+      "`2 4`",
+      "`2 3`",
+      "`3 3`",
+      "Raises `NameError`"
+    ],
+    "answer": 1,
+    "explanation": "All right-hand expressions use the old value `x == 1`."
+  },
+  {
+    "id": 20,
+    "section": "Pythonic Thinking",
+    "question": "**Generator choice**\n\nYou need to compute a sum without constructing an unnecessary intermediate list. Which is best?",
+    "options": [
+      "`sum([x * x for x in range(1_000_000)])`",
+      "`sum(x * x for x in range(1_000_000))`",
+      "`sum(list(map(lambda x: x * x, range(1_000_000))))`",
+      "`[sum(x * x) for x in range(1_000_000)]`"
+    ],
+    "answer": 1,
+    "explanation": "The generator expression avoids constructing a million-element list."
+  },
+  {
+    "id": 21,
+    "section": "Strings & Slicing",
+    "question": "**Negative-step slicing**\n\nWhat is the result?\n\n```python\n\"abcdefgh\"[5:1:-2]\n```",
+    "options": [
+      "`\"fdb\"`",
+      "`\"fd\"`",
+      "`\"ec\"`",
+      "`\"fedc\"`"
+    ],
+    "answer": 1,
+    "explanation": "The selected indices are `5` and `3`, producing `\"fd\"`."
+  },
+  {
+    "id": 22,
+    "section": "Strings & Slicing",
+    "question": "**Reverse stepping**\n\nWhat is the result?\n\n```python\n\"abcdefg\"[::-2]\n```",
+    "options": [
+      "`\"aceg\"`",
+      "`\"geca\"`",
+      "`\"gfedcba\"`",
+      "`\"gdb\"`"
+    ],
+    "answer": 1,
+    "explanation": "Starting from the end, the indices are `6, 4, 2, 0`."
+  },
+  {
+    "id": 23,
+    "section": "Strings & Slicing",
+    "question": "**Negative indices with a negative step**\n\nWhat is the result?\n\n```python\n\"abcdef\"[-2:-6:-2]\n```",
+    "options": [
+      "`\"ec\"`",
+      "`\"eca\"`",
+      "`\"db\"`",
+      "`\"ce\"`"
+    ],
+    "answer": 0,
+    "explanation": "The selected indices are `4` and `2`, producing `\"ec\"`."
+  },
+  {
+    "id": 24,
+    "section": "Strings & Slicing",
+    "question": "**Limited splitting**\n\nWhat is the result?\n\n```python\n\"a,b,c\".split(\",\", 1)\n```",
+    "options": [
+      "`[\"a\", \"b\", \"c\"]`",
+      "`[\"a\", \"b,c\"]`",
+      "`[\"a,b\", \"c\"]`",
+      "`(\"a\", \"b,c\")`"
+    ],
+    "answer": 1,
+    "explanation": "At most one split is performed."
+  },
+  {
+    "id": 25,
+    "section": "Strings & Slicing",
+    "question": "**`partition()` when the separator is absent**\n\nWhat is returned?\n\n```python\n\"python\".partition(\":\")\n```",
+    "options": [
+      "`(\"\", \"\", \"python\")`",
+      "`(\"python\", \"\", \"\")`",
+      "`(\"python\", None, None)`",
+      "Raises `ValueError`"
+    ],
+    "answer": 1,
+    "explanation": "If the separator is absent, the original string is the first element."
+  },
+  {
+    "id": 26,
+    "section": "Strings & Slicing",
+    "question": "**Character-set stripping**\n\nWhat does this return?\n\n```python\n\"www.example.com\".strip(\"w.com\")\n```",
+    "options": [
+      "`\"example\"`",
+      "`\"example.\"`",
+      "`\"www.example\"`",
+      "`\"[www.example.com](https://www.example.com)\"`"
+    ],
+    "answer": 0,
+    "explanation": "`strip()` removes any listed characters from both ends; it does not remove an exact substring."
+  },
+  {
+    "id": 27,
+    "section": "Strings & Slicing",
+    "question": "**Replacement count**\n\nWhat is the result?\n\n```python\n\"aaaa\".replace(\"aa\", \"b\", 1)\n```",
+    "options": [
+      "`\"bb\"`",
+      "`\"baa\"`",
+      "`\"aab\"`",
+      "`\"ba\"`"
+    ],
+    "answer": 1,
+    "explanation": "Only the first non-overlapping `\"aa\"` is replaced."
+  },
+  {
+    "id": 28,
+    "section": "Strings & Slicing",
+    "question": "**Center alignment with a fill character**\n\nWhat is the result?\n\n```python\nf\"{'cat':*^7}\"\n```",
+    "options": [
+      "`\"cat****\"`",
+      "`\"**cat**\"`",
+      "`\"*cat***\"`",
+      "`\"***cat*\"`"
+    ],
+    "answer": 1,
+    "explanation": "Four fill characters are divided evenly around the three-character string."
+  },
+  {
+    "id": 29,
+    "section": "Strings & Slicing",
+    "question": "**Raw strings**\n\nWhat is printed?\n\n```python\ns = r\"\\n\\t\"\nprint(len(s))\n```",
+    "options": [
+      "`2`",
+      "`3`",
+      "`4`",
+      "`5`"
+    ],
+    "answer": 2,
+    "explanation": "The raw string contains two backslashes plus `n` and `t`."
+  },
+  {
+    "id": 30,
+    "section": "Strings & Slicing",
+    "question": "**Unicode-aware normalization**\n\nWhat is the result?\n\n```python\n\"Straße\".casefold()\n```",
+    "options": [
+      "`\"straße\"`",
+      "`\"strasse\"`",
+      "`\"STRASSE\"`",
+      "`\"strae\"`"
+    ],
+    "answer": 1,
+    "explanation": "`casefold()` performs stronger Unicode normalization than `lower()`."
+  },
+  {
+    "id": 31,
+    "section": "Strings & Slicing",
+    "question": "**Digit classification**\n\nWhich pair of results is correct?\n\n```python\n\"²\".isdigit(), \"²\".isdecimal()\n```",
+    "options": [
+      "`(True, True)`",
+      "`(False, False)`",
+      "`(True, False)`",
+      "`(False, True)`"
+    ],
+    "answer": 2,
+    "explanation": "Superscript two is considered a digit but not a decimal character."
+  },
+  {
+    "id": 32,
+    "section": "Strings & Slicing",
+    "question": "**Splitting lines**\n\nWhat is returned?\n\n```python\n\"a\\r\\nb\\n\".splitlines()\n```",
+    "options": [
+      "`[\"a\", \"b\", \"\"]`",
+      "`[\"a\\r\", \"b\"]`",
+      "`[\"a\", \"b\"]`",
+      "`[\"a\\r\\nb\\n\"]`"
+    ],
+    "answer": 2,
+    "explanation": "`splitlines()` handles `\\r\\n` and does not add an empty item for the final newline."
+  },
+  {
+    "id": 33,
+    "section": "Strings & Slicing",
+    "question": "**Joining non-string values**\n\nWhich expression returns `\"123\"` without raising an exception?",
+    "options": [
+      "`\"\".join([1, 2, 3])`",
+      "`\"\".join(str([1, 2, 3]))`",
+      "`\"\".join(map(str, [1, 2, 3]))`",
+      "`join(\"\", [1, 2, 3])`"
+    ],
+    "answer": 2,
+    "explanation": "`join()` requires strings, and `map(str, ...)` converts each integer lazily."
+  },
+  {
+    "id": 34,
+    "section": "Strings & Slicing",
+    "question": "**Out-of-range slicing**\n\nWhat is returned?\n\n```python\n\"abc\"[100:200]\n```",
+    "options": [
+      "`None`",
+      "`\"\"`",
+      "Raises `IndexError`",
+      "`\"abc\"`"
+    ],
+    "answer": 1,
+    "explanation": "Out-of-range slices return an empty string rather than raising an exception."
+  },
+  {
+    "id": 35,
+    "section": "Strings & Slicing",
+    "question": "**`index()` versus `find()`**\n\nWhat happens here?\n\n```python\n\"banana\".index(\"z\")\n```",
+    "options": [
+      "Returns `-1`",
+      "Returns `None`",
+      "Raises `ValueError`",
+      "Raises `IndexError`"
+    ],
+    "answer": 2,
+    "explanation": "Unlike `find()`, `index()` raises `ValueError` when the substring is absent."
+  },
+  {
+    "id": 36,
+    "section": "Strings & Slicing",
+    "question": "**Prefix removal**\n\nWhat is returned?\n\n```python\n\"foobar\".removeprefix(\"foo\")\n```",
+    "options": [
+      "`\"foo\"`",
+      "`\"bar\"`",
+      "`\"obar\"`",
+      "`\"foobar\"`"
+    ],
+    "answer": 1,
+    "explanation": "The exact prefix `\"foo\"` is removed once."
+  },
+  {
+    "id": 37,
+    "section": "Strings & Slicing",
+    "question": "**Self-documenting f-strings**\n\nWhat is printed?\n\n```python\nx = 7\nprint(f\"{x=}\")\n```",
+    "options": [
+      "`7`",
+      "`x`",
+      "`x=7`",
+      "`{x=7}`"
+    ],
+    "answer": 2,
+    "explanation": "The debugging f-string includes both the expression text and value."
+  },
+  {
+    "id": 38,
+    "section": "Strings & Slicing",
+    "question": "**UTF-8 encoding**\n\nWhat is the result in a standard Python 3 environment?\n\n```python\nlen(\"é\".encode(\"utf-8\"))\n```",
+    "options": [
+      "`1`",
+      "`2`",
+      "`4`",
+      "Depends on the operating system"
+    ],
+    "answer": 1,
+    "explanation": "`\"é\"` takes two bytes in UTF-8."
+  },
+  {
+    "id": 39,
+    "section": "Strings & Slicing",
+    "question": "**Non-overlapping substring counting**\n\nWhat is returned?\n\n```python\n\"banana\".count(\"ana\")\n```",
+    "options": [
+      "`0`",
+      "`1`",
+      "`2`",
+      "`3`"
+    ],
+    "answer": 1,
+    "explanation": "`str.count()` counts non-overlapping occurrences."
+  },
+  {
+    "id": 40,
+    "section": "Strings & Slicing",
+    "question": "**Robust palindrome normalization**\n\nWhich implementation best checks whether text is a palindrome while ignoring case and non-alphanumeric characters?",
+    "options": [
+      "```python\n  text.lower() == text.lower()[::-1]\n  ```",
+      "```python\n  cleaned = \"\".join(\n      ch.casefold() for ch in text if ch.isalnum()\n  )\n  result = cleaned == cleaned[::-1]\n  ```",
+      "```python\n  result = sorted(text) == sorted(text[::-1])\n  ```",
+      "```python\n  result = text.strip() is text[::-1].strip()\n  ```"
+    ],
+    "answer": 1,
+    "explanation": "It normalizes case, filters unwanted characters, and compares against the reverse."
+  },
+  {
+    "id": 41,
+    "section": "Loops & Iterators",
+    "question": "**Appending while iterating**\n\nWhat is printed?\n\n```python\nvalues = [1, 2, 3]\n\nfor x in values:\n    if x < 3:\n        values.append(x + 3)\n\nprint(values)\n```",
+    "options": [
+      "`[1, 2, 3]`",
+      "`[1, 2, 3, 4, 5]`",
+      "An infinite loop",
+      "Raises `RuntimeError`"
+    ],
+    "answer": 1,
+    "explanation": "List iterators can see newly appended elements. Only `1` and `2` cause additions."
+  },
+  {
+    "id": 42,
+    "section": "Loops & Iterators",
+    "question": "**Removing while iterating**\n\nWhat is printed?\n\n```python\nvalues = [2, 2, 2, 2]\n\nfor x in values:\n    values.remove(x)\n\nprint(values)\n```",
+    "options": [
+      "`[]`",
+      "`[2]`",
+      "`[2, 2]`",
+      "Raises `RuntimeError`"
+    ],
+    "answer": 2,
+    "explanation": "Removing an item shifts the next element left, causing elements to be skipped."
+  },
+  {
+    "id": 43,
+    "section": "Loops & Iterators",
+    "question": "**Generator exhaustion**\n\nWhat is printed?\n\n```python\ng = (x * x for x in range(3))\nprint(list(g))\nprint(list(g))\n```",
+    "options": [
+      "```text\n  [0, 1, 4]\n  [0, 1, 4]\n  ```",
+      "```text\n  [0, 1, 4]\n  []\n  ```",
+      "```text\n  []\n  [0, 1, 4]\n  ```",
+      "Raises `StopIteration`"
+    ],
+    "answer": 1,
+    "explanation": "A generator is exhausted after its values have been consumed."
+  },
+  {
+    "id": 44,
+    "section": "Loops & Iterators",
+    "question": "**Delegating with `yield from`**\n\nWhat is printed?\n\n```python\ndef generate():\n    yield 0\n    yield from [1, 2]\n    yield 3\n\nprint(list(generate()))\n```",
+    "options": [
+      "`[0, [1, 2], 3]`",
+      "`[0, 1, 2, 3]`",
+      "`[1, 2]`",
+      "Raises `TypeError`"
+    ],
+    "answer": 1,
+    "explanation": "`yield from` yields each element of the delegated iterable."
+  },
+  {
+    "id": 45,
+    "section": "Loops & Iterators",
+    "question": "**Nested loop `else`**\n\nWhat is printed?\n\n```python\nfor i in range(2):\n    for j in range(2):\n        if j == 0:\n            break\n    else:\n        print(\"inner\")\nelse:\n    print(\"outer\")\n```",
+    "options": [
+      "Nothing",
+      "`inner` twice",
+      "`outer`",
+      "`inner` twice, then `outer`"
+    ],
+    "answer": 2,
+    "explanation": "The inner loops break, but the outer loop completes without an outer `break`."
+  },
+  {
+    "id": 46,
+    "section": "Loops & Iterators",
+    "question": "**`next()` with a default**\n\nWhat is printed?\n\n```python\nit = iter([10])\nprint(next(it, \"missing\"))\nprint(next(it, \"missing\"))\n```",
+    "options": [
+      "```text\n  10\n  missing\n  ```",
+      "```text\n  10\n  StopIteration\n  ```",
+      "```text\n  missing\n  missing\n  ```",
+      "Raises `TypeError`"
+    ],
+    "answer": 0,
+    "explanation": "The default is returned instead of raising `StopIteration`."
+  },
+  {
+    "id": 47,
+    "section": "Loops & Iterators",
+    "question": "**Unequal-length `zip()`**\n\nWhat is returned?\n\n```python\nlist(zip([1, 2, 3], [\"a\", \"b\"]))\n```",
+    "options": [
+      "`[(1, \"a\"), (2, \"b\"), (3, None)]`",
+      "`[(1, \"a\"), (2, \"b\")]`",
+      "`[(1, \"a\"), (2, \"b\"), (3, \"a\")]`",
+      "Raises `ValueError`"
+    ],
+    "answer": 1,
+    "explanation": "Ordinary `zip()` stops at the shortest iterable."
+  },
+  {
+    "id": 48,
+    "section": "Loops & Iterators",
+    "question": "**Custom enumeration start**\n\nWhat is printed?\n\n```python\nfor i, value in enumerate([\"a\", \"b\"], start=-1):\n    print(i, value, end=\";\")\n```",
+    "options": [
+      "`0 a;1 b;`",
+      "`-1 a;0 b;`",
+      "`-1 a;-2 b;`",
+      "`1 a;2 b;`"
+    ],
+    "answer": 1,
+    "explanation": "Enumeration begins at `-1` and increments by one."
+  },
+  {
+    "id": 49,
+    "section": "Loops & Iterators",
+    "question": "**Callable-sentinel iteration**\n\nWhat is printed?\n\n```python\ndata = iter([3, 2, 0, 5])\nvalues = list(iter(lambda: next(data), 0))\nprint(values)\n```",
+    "options": [
+      "`[3, 2]`",
+      "`[3, 2, 0]`",
+      "`[3, 2, 5]`",
+      "Raises `StopIteration`"
+    ],
+    "answer": 0,
+    "explanation": "Iteration stops when the callable returns the sentinel `0`; the sentinel is excluded."
+  },
+  {
+    "id": 50,
+    "section": "Loops & Iterators",
+    "question": "**Negative-step range**\n\nWhat is returned?\n\n```python\nlist(range(5, 0, -2))\n```",
+    "options": [
+      "`[5, 3, 1]`",
+      "`[5, 3]`",
+      "`[5, 4, 3, 2, 1]`",
+      "`[]`"
+    ],
+    "answer": 0,
+    "explanation": "The range produces `5`, `3`, and `1`."
+  },
+  {
+    "id": 51,
+    "section": "Loops & Iterators",
+    "question": "**Iterator unpacking**\n\nWhat is printed?\n\n```python\nit = iter([1, 2, 3])\na, *b = it\nprint(a, b, list(it))\n```",
+    "options": [
+      "`1 [2, 3] []`",
+      "`1 [2] [3]`",
+      "`1 [2, 3] [1, 2, 3]`",
+      "Raises `ValueError`"
+    ],
+    "answer": 0,
+    "explanation": "Extended unpacking consumes the entire iterator."
+  },
+  {
+    "id": 52,
+    "section": "Loops & Iterators",
+    "question": "**Loop variable lifetime**\n\nWhat is printed?\n\n```python\nfor i in range(3):\n    pass\n\nprint(i)\n```",
+    "options": [
+      "`0`",
+      "`2`",
+      "`3`",
+      "Raises `NameError`"
+    ],
+    "answer": 1,
+    "explanation": "A normal `for` loop target remains defined after the loop."
+  },
+  {
+    "id": 53,
+    "section": "Loops & Iterators",
+    "question": "**`while` loop `else`**\n\nWhat is printed?\n\n```python\nn = 0\n\nwhile n < 0:\n    print(\"loop\")\nelse:\n    print(\"done\")\n```",
+    "options": [
+      "Nothing",
+      "`loop`",
+      "`done`",
+      "Raises `SyntaxError`"
+    ],
+    "answer": 2,
+    "explanation": "The loop body never runs, but it still completes without `break`."
+  },
+  {
+    "id": 54,
+    "section": "Loops & Iterators",
+    "question": "**`finally` during `break`**\n\nWhat is printed?\n\n```python\nfor i in range(3):\n    try:\n        if i == 1:\n            break\n    finally:\n        print(i, end=\" \")\n```",
+    "options": [
+      "`0`",
+      "`0 1`",
+      "`0 1 2`",
+      "Nothing"
+    ],
+    "answer": 1,
+    "explanation": "The `finally` block runs for `i == 0` and again before the `break` for `i == 1`."
+  },
+  {
+    "id": 55,
+    "section": "Loops & Iterators",
+    "question": "**Nested comprehension order**\n\nWhat is returned?\n\n```python\n[\n    (i, j)\n    for i in range(2)\n    for j in range(i, 3)\n]\n```",
+    "options": [
+      "`[(0, 0), (1, 1)]`",
+      "`[(0, 0), (0, 1), (0, 2), (1, 1), (1, 2)]`",
+      "`[(0, 0), (1, 0), (1, 1), (1, 2)]`",
+      "`[(0, 1), (0, 2), (1, 2)]`"
+    ],
+    "answer": 1,
+    "explanation": "The second loop runs completely for each current value of `i`."
+  },
+  {
+    "id": 56,
+    "section": "Loops & Iterators",
+    "question": "**Generator laziness**\n\nWhat is printed?\n\n```python\ndef transform(x):\n    print(x, end=\"\")\n    return x * x\n\ng = (transform(x) for x in range(3))\nprint(\"A\", end=\"\")\nnext(g)\nprint(\"B\")\n```",
+    "options": [
+      "`012AB`",
+      "`A012B`",
+      "`A0B`",
+      "`AB0`"
+    ],
+    "answer": 2,
+    "explanation": "Creating the generator performs no transformations; `next(g)` processes only `0`."
+  },
+  {
+    "id": 57,
+    "section": "Loops & Iterators",
+    "question": "**Partially consumed `map`**\n\nWhat is printed?\n\n```python\nm = map(lambda x: x * 2, [1, 2, 3])\nprint(next(m))\nprint(list(m))\n```",
+    "options": [
+      "```text\n  2\n  [2, 4, 6]\n  ```",
+      "```text\n  2\n  [4, 6]\n  ```",
+      "```text\n  1\n  [2, 3]\n  ```",
+      "Raises `TypeError`"
+    ],
+    "answer": 1,
+    "explanation": "The first element has already been consumed by `next()`."
+  },
+  {
+    "id": 58,
+    "section": "Loops & Iterators",
+    "question": "**Reversing a range**\n\nWhat is returned?\n\n```python\nlist(reversed(range(1, 6, 2)))\n```",
+    "options": [
+      "`[5, 3, 1]`",
+      "`[6, 4, 2]`",
+      "`[1, 3, 5]`",
+      "Raises `TypeError`"
+    ],
+    "answer": 0,
+    "explanation": "The range contains `1, 3, 5`, which are then reversed."
+  },
+  {
+    "id": 59,
+    "section": "Loops & Iterators",
+    "question": "**Nested `continue`**\n\nWhat is printed?\n\n```python\ncount = 0\n\nfor i in range(3):\n    for j in range(3):\n        if i == j:\n            continue\n        count += 1\n\nprint(count)\n```",
+    "options": [
+      "`3`",
+      "`6`",
+      "`8`",
+      "`9`"
+    ],
+    "answer": 1,
+    "explanation": "Of nine pairs, the three pairs where `i == j` are skipped."
+  },
+  {
+    "id": 60,
+    "section": "Loops & Iterators",
+    "question": "**Loop `else` and `continue`**\n\nWhat is printed?\n\n```python\nfor x in [1, 2, 3]:\n    if x < 10:\n        continue\n    break\nelse:\n    print(\"complete\")\n```",
+    "options": [
+      "Nothing",
+      "`complete`",
+      "`1 2 3 complete`",
+      "Raises `SyntaxError`"
+    ],
+    "answer": 1,
+    "explanation": "`continue` does not prevent the loop’s `else` clause; only `break` does."
+  },
+  {
+    "id": 61,
+    "section": "Dictionaries",
+    "question": "**Equal keys with equal hashes**\n\nWhat is printed?\n\n```python\nd = {True: \"first\", 1: \"second\"}\nprint(len(d), d[True])\n```",
+    "options": [
+      "`2 first`",
+      "`2 second`",
+      "`1 first`",
+      "`1 second`"
+    ],
+    "answer": 3,
+    "explanation": "`True == 1` and they have the same hash, so the second assignment replaces the value."
+  },
+  {
+    "id": 62,
+    "section": "Dictionaries",
+    "question": "**Dynamic dictionary views**\n\nWhat is printed?\n\n```python\nd = {\"a\": 1}\nkeys = d.keys()\nd[\"b\"] = 2\nprint(list(keys))\n```",
+    "options": [
+      "`[\"a\"]`",
+      "`[\"a\", \"b\"]`",
+      "Raises `RuntimeError`",
+      "The result is always an empty list"
+    ],
+    "answer": 1,
+    "explanation": "Dictionary views are dynamic and reflect later changes."
+  },
+  {
+    "id": 63,
+    "section": "Dictionaries",
+    "question": "**Argument evaluation with `setdefault()`**\n\nWhat is printed?\n\n```python\ncalls = 0\n\ndef make_default():\n    global calls\n    calls += 1\n    return []\n\nd = {\"x\": [1]}\nd.setdefault(\"x\", make_default())\n\nprint(calls, d)\n```",
+    "options": [
+      "`0 {'x': [1]}`",
+      "`1 {'x': [1]}`",
+      "`1 {'x': []}`",
+      "Raises `KeyError`"
+    ],
+    "answer": 1,
+    "explanation": "Function arguments are evaluated before `setdefault()` is called, even if the key exists."
+  },
+  {
+    "id": 64,
+    "section": "Dictionaries",
+    "question": "**Shared values from `fromkeys()`**\n\nWhat is printed?\n\n```python\nd = dict.fromkeys([\"a\", \"b\"], [])\nd[\"a\"].append(1)\nprint(d)\n```",
+    "options": [
+      "`{'a': [1], 'b': []}`",
+      "`{'a': [1], 'b': [1]}`",
+      "`{'a': [], 'b': []}`",
+      "Raises `TypeError`"
+    ],
+    "answer": 1,
+    "explanation": "Both keys refer to the same list object."
+  },
+  {
+    "id": 65,
+    "section": "Dictionaries",
+    "question": "**Merge precedence**\n\nWhat is printed?\n\n```python\nleft = {\"x\": 1, \"y\": 2}\nright = {\"y\": 9, \"z\": 3}\n\nprint(left | right)\n```",
+    "options": [
+      "`{'x': 1, 'y': 2, 'z': 3}`",
+      "`{'x': 1, 'y': 9, 'z': 3}`",
+      "`{'y': 9}`",
+      "Raises `KeyError`"
+    ],
+    "answer": 1,
+    "explanation": "For duplicate keys, the right operand’s value wins."
+  },
+  {
+    "id": 66,
+    "section": "Dictionaries",
+    "question": "**Return value of `update()`**\n\nWhat is printed?\n\n```python\nd = {\"a\": 1}\nresult = d.update({\"b\": 2})\nprint(result, d)\n```",
+    "options": [
+      "`{'a': 1, 'b': 2} {'a': 1, 'b': 2}`",
+      "`None {'a': 1, 'b': 2}`",
+      "`True {'a': 1, 'b': 2}`",
+      "`None {'a': 1}`"
+    ],
+    "answer": 1,
+    "explanation": "`update()` mutates the dictionary and returns `None`."
+  },
+  {
+    "id": 67,
+    "section": "Dictionaries",
+    "question": "**Missing versus `None`**\n\nGiven:\n\n```python\nd = {\"x\": None}\n```\n\nWhich expression reliably distinguishes `\"x\"` from a missing key?",
+    "options": [
+      "`d.get(\"x\") is None`",
+      "`bool(d.get(\"x\"))`",
+      "`\"x\" in d`",
+      "`d.get(\"x\", None)`"
+    ],
+    "answer": 2,
+    "explanation": "Membership distinguishes an existing key whose value is `None` from an absent key."
+  },
+  {
+    "id": 68,
+    "section": "Dictionaries",
+    "question": "**`defaultdict` insertion**\n\nWhat is printed?\n\n```python\nfrom collections import defaultdict\n\nd = defaultdict(list)\nvalue = d[\"missing\"]\n\nprint(value, dict(d))\n```",
+    "options": [
+      "`[] {}`",
+      "`None {'missing': None}`",
+      "`[] {'missing': []}`",
+      "Raises `KeyError`"
+    ],
+    "answer": 2,
+    "explanation": "Access invokes the default factory and inserts the resulting empty list."
+  },
+  {
+    "id": 69,
+    "section": "Dictionaries",
+    "question": "**Counter subtraction**\n\nWhat is printed?\n\n```python\nfrom collections import Counter\n\nc = Counter(a=2, b=1) - Counter(a=1, b=2)\nprint(c)\n```",
+    "options": [
+      "`Counter({'a': 1, 'b': -1})`",
+      "`Counter({'a': 1})`",
+      "`Counter({'a': 1, 'b': 0})`",
+      "`Counter()`"
+    ],
+    "answer": 1,
+    "explanation": "Counter subtraction discards zero and negative counts."
+  },
+  {
+    "id": 70,
+    "section": "Dictionaries",
+    "question": "**Duplicate keys in a comprehension**\n\nWhat is printed?\n\n```python\nd = {x % 2: x for x in range(5)}\nprint(d)\n```",
+    "options": [
+      "`{0: 0, 1: 1}`",
+      "`{0: 4, 1: 3}`",
+      "`{0: [0, 2, 4], 1: [1, 3]}`",
+      "Raises `ValueError`"
+    ],
+    "answer": 1,
+    "explanation": "Later values overwrite earlier values for each repeated key."
+  },
+  {
+    "id": 71,
+    "section": "Dictionaries",
+    "question": "**Safe `pop()`**\n\nWhat is returned?\n\n```python\n{}.pop(\"missing\", 99)\n```",
+    "options": [
+      "`None`",
+      "`99`",
+      "Raises `KeyError`",
+      "`{}`"
+    ],
+    "answer": 1,
+    "explanation": "The provided default prevents a `KeyError`."
+  },
+  {
+    "id": 72,
+    "section": "Dictionaries",
+    "question": "**Hashability**\n\nWhich object cannot be used as a dictionary key?",
+    "options": [
+      "`(1, 2)`",
+      "`\"abc\"`",
+      "`frozenset({1, 2})`",
+      "`(1, [2, 3])`"
+    ],
+    "answer": 3,
+    "explanation": "A tuple is hashable only when all its elements are hashable; lists are not."
+  },
+  {
+    "id": 73,
+    "section": "Dictionaries",
+    "question": "**Set operations on key views**\n\nWhat is returned?\n\n```python\nd = {\"a\": 1, \"b\": 2}\nd.keys() & {\"b\", \"c\"}\n```",
+    "options": [
+      "`{\"b\"}`",
+      "`[\"b\"]`",
+      "`dict_keys([\"b\"])`",
+      "Raises `TypeError`"
+    ],
+    "answer": 0,
+    "explanation": "Dictionary key views support set-like operations."
+  },
+  {
+    "id": 74,
+    "section": "Dictionaries",
+    "question": "**Shallow dictionary copying**\n\nWhat is printed?\n\n```python\nd1 = {\"items\": [1]}\nd2 = d1.copy()\n\nd2[\"items\"].append(2)\nd2[\"extra\"] = 3\n\nprint(d1)\n```",
+    "options": [
+      "`{'items': [1]}`",
+      "`{'items': [1, 2]}`",
+      "`{'items': [1, 2], 'extra': 3}`",
+      "`{'items': [1], 'extra': 3}`"
+    ],
+    "answer": 1,
+    "explanation": "The nested list is shared, but the newly added top-level key is not."
+  },
+  {
+    "id": 75,
+    "section": "Dictionaries",
+    "question": "**Changing dictionary size during iteration**\n\nWhat generally happens?\n\n```python\nd = {\"a\": 1, \"b\": 2}\n\nfor key in d:\n    del d[key]\n```",
+    "options": [
+      "The dictionary becomes empty safely.",
+      "It raises `RuntimeError` because its size changed during iteration.",
+      "It raises `KeyError` before deleting anything.",
+      "Python automatically iterates over a copy."
+    ],
+    "answer": 1,
+    "explanation": "Structural dictionary changes during direct iteration raise `RuntimeError`."
+  },
+  {
+    "id": 76,
+    "section": "Dictionaries",
+    "question": "**Changing values during iteration**\n\nWhat is printed?\n\n```python\nd = {\"a\": 1, \"b\": 2}\n\nfor key in d:\n    d[key] += 10\n\nprint(d)\n```",
+    "options": [
+      "`{'a': 1, 'b': 2}`",
+      "`{'a': 11, 'b': 12}`",
+      "Raises `RuntimeError`",
+      "Raises `TypeError`"
+    ],
+    "answer": 1,
+    "explanation": "Updating existing values does not change the dictionary’s size."
+  },
+  {
+    "id": 77,
+    "section": "Dictionaries",
+    "question": "**Filtered dictionary comprehension**\n\nWhat is returned?\n\n```python\n{x: x * x for x in range(5) if x % 2}\n```",
+    "options": [
+      "`{0: 0, 2: 4, 4: 16}`",
+      "`{1: 1, 3: 9}`",
+      "`[1, 9]`",
+      "`{True: [1, 3]}`"
+    ],
+    "answer": 1,
+    "explanation": "Odd numbers are truthy under `x % 2`, so only `1` and `3` are included."
+  },
+  {
+    "id": 78,
+    "section": "Dictionaries",
+    "question": "**Grouping with `setdefault()`**\n\nWhat is printed?\n\n```python\ngroups = {}\n\nfor word in [\"ant\", \"apple\", \"bat\"]:\n    groups.setdefault(word[0], []).append(word)\n\nprint(groups)\n```",
+    "options": [
+      "`{'a': 'apple', 'b': 'bat'}`",
+      "`{'a': ['ant', 'apple'], 'b': ['bat']}`",
+      "`{'ant': 'a', 'apple': 'a', 'bat': 'b'}`",
+      "Raises `KeyError`"
+    ],
+    "answer": 1,
+    "explanation": "Each initial letter maps to a list of words beginning with that letter."
+  },
+  {
+    "id": 79,
+    "section": "Dictionaries",
+    "question": "**Dictionary equality**\n\nWhat is returned?\n\n```python\n{\"a\": 1, \"b\": 2} == {\"b\": 2, \"a\": 1}\n```",
+    "options": [
+      "`True`",
+      "`False`",
+      "Depends on insertion order",
+      "Raises `TypeError`"
+    ],
+    "answer": 0,
+    "explanation": "Dictionary equality compares key-value contents, not insertion order."
+  },
+  {
+    "id": 80,
+    "section": "Dictionaries",
+    "question": "**`fromkeys()` with repeated input**\n\nWhat is printed?\n\n```python\nprint(dict.fromkeys(\"aba\", 0))\n```",
+    "options": [
+      "`{'a': 0, 'b': 0}`",
+      "`{'a': 0, 'b': 0, 'a': 0}`",
+      "`{'aba': 0}`",
+      "`{'a': [0, 0], 'b': [0]}`"
+    ],
+    "answer": 0,
+    "explanation": "Repeated keys collapse into one dictionary entry."
+  },
+  {
+    "id": 81,
+    "section": "Functions",
+    "question": "**Mutable default arguments**\n\nWhat is printed?\n\n```python\ndef add_item(item, items=[]):\n    items.append(item)\n    return items\n\nprint(add_item(1))\nprint(add_item(2))\n```",
+    "options": [
+      "```text\n  [1]\n  [2]\n  ```",
+      "```text\n  [1]\n  [1, 2]\n  ```",
+      "```text\n  [1, 2]\n  [1, 2]\n  ```",
+      "Raises `TypeError`"
+    ],
+    "answer": 1,
+    "explanation": "The default list is created once and reused across calls."
+  },
+  {
+    "id": 82,
+    "section": "Functions",
+    "question": "**Default-value binding time**\n\nWhat is printed?\n\n```python\nrate = 10\n\ndef calculate(value=rate):\n    return value\n\nrate = 20\nprint(calculate())\n```",
+    "options": [
+      "`10`",
+      "`20`",
+      "`None`",
+      "Raises `NameError`"
+    ],
+    "answer": 0,
+    "explanation": "Default arguments are evaluated when the function is defined."
+  },
+  {
+    "id": 83,
+    "section": "Functions",
+    "question": "**Keyword-only arguments**\n\nWhich call is valid?\n\n```python\ndef connect(host, *, timeout=5):\n    return host, timeout\n```",
+    "options": [
+      "`connect(\"server\", 10)`",
+      "`connect(host=\"server\", 10)`",
+      "`connect(\"server\", timeout=10)`",
+      "`connect(timeout=10, \"server\")`"
+    ],
+    "answer": 2,
+    "explanation": "Parameters following `*` must be passed by keyword."
+  },
+  {
+    "id": 84,
+    "section": "Functions",
+    "question": "**Positional-only arguments**\n\nGiven:\n\n```python\ndef divide(a, b, /):\n    return a / b\n```\n\nWhich calls are invalid?\n- Call 1: `divide(10, 2)`\n- Call 2: `divide(a=10, b=2)`\n- Call 3: `divide(*(10, 2))`\n- Call 4: `divide(10, b=2)`",
+    "options": [
+      "Only Call 1",
+      "Only Call 2",
+      "Call 2 and Call 4",
+      "Call 1, Call 2, and Call 4"
+    ],
+    "answer": 2,
+    "explanation": "Both `a` and `b` are positional-only, making B and D invalid."
+  },
+  {
+    "id": 85,
+    "section": "Functions",
+    "question": "**Argument evaluation order**\n\nWhat is printed?\n\n```python\ndef mark(value):\n    print(value, end=\"\")\n    return value\n\ndef receive(a, b, c):\n    pass\n\nreceive(mark(\"A\"), c=mark(\"C\"), b=mark(\"B\"))\n```",
+    "options": [
+      "`ABC`",
+      "`ACB`",
+      "`CBA`",
+      "The order is undefined"
+    ],
+    "answer": 1,
+    "explanation": "Argument expressions are evaluated from left to right as written: A, C, B."
+  },
+  {
+    "id": 86,
+    "section": "Functions",
+    "question": "**Late-binding closures**\n\nWhat is printed?\n\n```python\nfunctions = [lambda: i for i in range(3)]\nprint([f() for f in functions])\n```",
+    "options": [
+      "`[0, 1, 2]`",
+      "`[2, 2, 2]`",
+      "`[0, 0, 0]`",
+      "Raises `NameError`"
+    ],
+    "answer": 1,
+    "explanation": "Each closure looks up the same final value of `i`, which is `2`."
+  },
+  {
+    "id": 87,
+    "section": "Functions",
+    "question": "**Correcting late binding**\n\nWhich version creates functions that return `0`, `1`, and `2`, respectively?",
+    "options": [
+      "```python\n  functions = [lambda: i for i in range(3)]\n  ```",
+      "```python\n  functions = [lambda i=i: i for i in range(3)]\n  ```",
+      "```python\n  functions = [lambda i: i for i in range(3)]\n  ```",
+      "```python\n  functions = [lambda: range(3) for i in range(3)]\n  ```"
+    ],
+    "answer": 1,
+    "explanation": "The default parameter captures the current iteration’s value."
+  },
+  {
+    "id": 88,
+    "section": "Functions",
+    "question": "**`nonlocal` state**\n\nWhat is printed?\n\n```python\ndef make_counter():\n    count = 0\n\n    def increment():\n        nonlocal count\n        count += 1\n        return count\n\n    return increment\n\ncounter = make_counter()\nprint(counter(), counter())\n```",
+    "options": [
+      "`1 1`",
+      "`1 2`",
+      "`0 1`",
+      "Raises `UnboundLocalError`"
+    ],
+    "answer": 1,
+    "explanation": "The captured `count` persists and is modified by `nonlocal`."
+  },
+  {
+    "id": 89,
+    "section": "Functions",
+    "question": "**Global lookup time**\n\nWhat is printed?\n\n```python\nx = 1\n\ndef get_x():\n    return x\n\nx = 2\nprint(get_x())\n```",
+    "options": [
+      "`1`",
+      "`2`",
+      "`None`",
+      "Raises `UnboundLocalError`"
+    ],
+    "answer": 1,
+    "explanation": "Global names are looked up when the function executes."
+  },
+  {
+    "id": 90,
+    "section": "Functions",
+    "question": "**Decorator application order**\n\nWhat is printed?\n\n```python\ndef first(fn):\n    def wrapper():\n        print(\"1\", end=\"\")\n        fn()\n    return wrapper\n\ndef second(fn):\n    def wrapper():\n        print(\"2\", end=\"\")\n        fn()\n    return wrapper\n\n@first\n@second\ndef show():\n    print(\"F\", end=\"\")\n\nshow()\n```",
+    "options": [
+      "`12F`",
+      "`21F`",
+      "`F21`",
+      "`F12`"
+    ],
+    "answer": 0,
+    "explanation": "The decoration is equivalent to `show = first(second(show))`."
+  },
+  {
+    "id": 91,
+    "section": "Functions",
+    "question": "**Missing return from a decorator wrapper**\n\nWhat is printed?\n\n```python\ndef log_call(fn):\n    def wrapper(*args, **kwargs):\n        fn(*args, **kwargs)\n    return wrapper\n\n@log_call\ndef add(a, b):\n    return a + b\n\nprint(add(2, 3))\n```",
+    "options": [
+      "`5`",
+      "`None`",
+      "`(2, 3)`",
+      "Raises `TypeError`"
+    ],
+    "answer": 1,
+    "explanation": "The wrapper calls `add()` but fails to return its result."
+  },
+  {
+    "id": 92,
+    "section": "Functions",
+    "question": "**Rebinding versus mutating a default**\n\nWhat is printed?\n\n```python\ndef collect(x, items=[]):\n    items = items + [x]\n    return items\n\nprint(collect(1))\nprint(collect(2))\n```",
+    "options": [
+      "```text\n  [1]\n  [1, 2]\n  ```",
+      "```text\n  [1]\n  [2]\n  ```",
+      "```text\n  []\n  []\n  ```",
+      "Raises `UnboundLocalError`"
+    ],
+    "answer": 1,
+    "explanation": "`items + [x]` creates a new list rather than mutating the default list."
+  },
+  {
+    "id": 93,
+    "section": "Functions",
+    "question": "**`finally` overriding a return**\n\nWhat is printed?\n\n```python\ndef result():\n    try:\n        return 1\n    finally:\n        return 2\n\nprint(result())\n```",
+    "options": [
+      "`1`",
+      "`2`",
+      "`None`",
+      "Raises `RuntimeError`"
+    ],
+    "answer": 1,
+    "explanation": "A `return` in `finally` overrides the earlier return."
+  },
+  {
+    "id": 94,
+    "section": "Functions",
+    "question": "**Type hints at runtime**\n\nWhat happens here?\n\n```python\ndef double(x: int) -> int:\n    return x * 2\n\nprint(double(\"a\"))\n```",
+    "options": [
+      "Prints `2`",
+      "Prints `aa`",
+      "Raises `TypeError` because the annotation requires an integer",
+      "Raises `SyntaxError`"
+    ],
+    "answer": 1,
+    "explanation": "Standard Python type annotations are not automatically enforced at runtime."
+  },
+  {
+    "id": 95,
+    "section": "Functions",
+    "question": "**Duplicate argument assignment**\n\nWhat happens?\n\n```python\ndef combine(a, b):\n    return a + b\n\nargs = (1, 2)\ncombine(*args, b=3)\n```",
+    "options": [
+      "Returns `3`",
+      "Returns `4`",
+      "Raises `TypeError` because `b` receives multiple values",
+      "Raises `ValueError`"
+    ],
+    "answer": 2,
+    "explanation": "`b` is assigned once by `*args` and again by the keyword argument."
+  },
+  {
+    "id": 96,
+    "section": "Functions",
+    "question": "**Keyword unpacking requirements**\n\nWhat happens?\n\n```python\ndef display(**kwargs):\n    return kwargs\n\ndata = {1: \"one\"}\ndisplay(**data)\n```",
+    "options": [
+      "Returns `{1: \"one\"}`",
+      "Converts the key to `\"1\"`",
+      "Raises `TypeError` because keyword names must be strings",
+      "Raises `KeyError`"
+    ],
+    "answer": 2,
+    "explanation": "Keys used by `**` must be strings."
+  },
+  {
+    "id": 97,
+    "section": "Functions",
+    "question": "**Sending values into a generator**\n\nWhat is printed?\n\n```python\ndef generate():\n    value = yield 1\n    yield value * 2\n\ng = generate()\nprint(next(g))\nprint(g.send(5))\n```",
+    "options": [
+      "```text\n  1\n  5\n  ```",
+      "```text\n  1\n  10\n  ```",
+      "```text\n  None\n  10\n  ```",
+      "Raises `StopIteration`"
+    ],
+    "answer": 1,
+    "explanation": "`next()` reaches the first `yield`; `send(5)` assigns `5` to `value`."
+  },
+  {
+    "id": 98,
+    "section": "Functions",
+    "question": "**Conditional lambda**\n\nWhat is printed?\n\n```python\ntransform = lambda x: x if x % 2 else -x\nprint([transform(x) for x in [1, 2, 3]])\n```",
+    "options": [
+      "`[-1, 2, -3]`",
+      "`[1, -2, 3]`",
+      "`[1, 2, 3]`",
+      "`[-1, -2, -3]`"
+    ],
+    "answer": 1,
+    "explanation": "Odd values remain positive, while the even value is negated."
+  },
+  {
+    "id": 99,
+    "section": "Functions",
+    "question": "**Partial function application**\n\nWhat is printed?\n\n```python\nfrom functools import partial\n\ndef power(base, exponent):\n    return base ** exponent\n\nsquare = partial(power, exponent=2)\nprint(square(5))\n```",
+    "options": [
+      "`10`",
+      "`25`",
+      "`32`",
+      "Raises `TypeError`"
+    ],
+    "answer": 1,
+    "explanation": "`partial()` fixes `exponent` at `2`, creating a square function."
+  },
+  {
+    "id": 100,
+    "section": "Functions",
+    "question": "**`functools.wraps`**\n\nWhat is the primary purpose of applying `@functools.wraps(original_function)` to a decorator’s wrapper?",
+    "options": [
+      "It automatically returns the original function’s result.",
+      "It preserves metadata such as `__name__`, `__doc__`, and `__wrapped__`.",
+      "It makes the wrapper execute asynchronously.",
+      "It prevents the wrapped function from raising exceptions."
+    ],
+    "answer": 1,
+    "explanation": "`wraps()` preserves important function metadata and exposes `__wrapped__`."
+  }
+];
+
+    // ---------------------------------------------------------
+    // APPLICATION LOGIC & STATE
+    // ---------------------------------------------------------
+    let currentTheme = 'dark';
+    let quizMode = 'exam';
+    let questions = [];
+    let currentIndex = 0;
+    let userAnswers = {};
+    let flaggedQuestions = new Set();
+    let timerInterval = null;
+    let secondsElapsed = 0;
+
+    // DOM ELEMENTS
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const startQuizBtn = document.getElementById('startQuizBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const flagBtn = document.getElementById('flagBtn');
+    const gridToggleBtn = document.getElementById('gridToggleBtn');
+    const gridModal = document.getElementById('gridModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const reviewAnswersBtn = document.getElementById('reviewAnswersBtn');
+    const restartBtn = document.getElementById('restartBtn');
+
+    // THEME TOGGLE
+    themeToggleBtn.addEventListener('click', () => {
+      currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', currentTheme);
+      themeToggleBtn.querySelector('span').textContent = currentTheme === 'dark' ? '🌙' : '☀️';
+    });
+
+    // MARKDOWN & HTML ESCAPING
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function formatMarkdownCode(text) {
+      if (!text) return '';
+      let html = text.replace(/```(?:python|text)?\s*([\s\S]*?)```/g, (match, code) => {
+        return `<pre><code>${escapeHtml(code.trim())}</code></pre>`;
+      });
+      html = html.replace(/`([^`]+)`/g, (match, code) => {
+        return `<code>${escapeHtml(code)}</code>`;
+      });
+      html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      const parts = html.split(/(<pre>[\s\S]*?<\/pre>)/g);
+      return parts.map(part => {
+        if (part.startsWith('<pre>')) return part;
+        return part.replace(/\n/g, '<br>');
+      }).join('');
+    }
+
+    // TIMER
+    function startTimer() {
+      stopTimer();
+      secondsElapsed = 0;
+      updateTimerDisplay();
+      timerInterval = setInterval(() => {
+        secondsElapsed++;
+        updateTimerDisplay();
+      }, 1000);
+    }
+
+    function stopTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+    }
+
+    function updateTimerDisplay() {
+      const mins = Math.floor(secondsElapsed / 60);
+      const secs = secondsElapsed % 60;
+      document.getElementById('timerDisplay').textContent = 
+        `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
+    // START QUIZ
+    startQuizBtn.addEventListener('click', startQuiz);
+
+    function startQuiz() {
+      quizMode = document.getElementById('modeSelect').value;
+      const sectionVal = document.getElementById('sectionSelect').value;
+
+      const sectionMap = {
+        '1': 'Pythonic Thinking',
+        '2': 'Strings & Slicing',
+        '3': 'Loops & Iterators',
+        '4': 'Dictionaries',
+        '5': 'Functions'
+      };
+
+      if (sectionVal === 'all') {
+        questions = [...quizData];
+      } else {
+        questions = quizData.filter(q => q.section === sectionMap[sectionVal]);
+      }
+
+      currentIndex = 0;
+      userAnswers = {};
+      flaggedQuestions.clear();
+
+      document.getElementById('startScreen').classList.add('hidden');
+      document.getElementById('resultsScreen').classList.add('hidden');
+      document.getElementById('quizScreen').classList.remove('hidden');
+      document.getElementById('timerDisplay').classList.remove('hidden');
+      document.getElementById('gridToggleBtn').classList.remove('hidden');
+
+      startTimer();
+      loadQuestion(0);
+    }
+
+    // LOAD QUESTION
+    function loadQuestion(index) {
+      currentIndex = index;
+      const q = questions[currentIndex];
+
+      const total = questions.length;
+      const pct = Math.round(((currentIndex + 1) / total) * 100);
+      document.getElementById('progressText').textContent = `Question ${currentIndex + 1} of ${total}`;
+      document.getElementById('progressPercent').textContent = `${pct}%`;
+      document.getElementById('progressBarFill').style.width = `${pct}%`;
+
+      document.getElementById('sectionBadge').textContent = q.section;
+      if (flaggedQuestions.has(q.id)) {
+        flagBtn.classList.add('active');
+        flagBtn.innerHTML = '<span>★</span> Flagged';
+      } else {
+        flagBtn.classList.remove('active');
+        flagBtn.innerHTML = '<span>★</span> Flag for Review';
+      }
+
+      document.getElementById('questionText').innerHTML = formatMarkdownCode(q.question);
+
+      const choicesList = document.getElementById('choicesList');
+      choicesList.innerHTML = '';
+
+      const selectedAnswer = userAnswers[q.id];
+      const letters = ['A', 'B', 'C', 'D'];
+
+      q.options.forEach((optText, optIdx) => {
+        const btn = document.createElement('button');
+        btn.className = 'choice-option';
+        
+        let optionClass = '';
+        if (quizMode === 'practice' && selectedAnswer !== undefined) {
+          if (optIdx === q.answer) {
+            optionClass = 'correct';
+          } else if (optIdx === selectedAnswer && selectedAnswer !== q.answer) {
+            optionClass = 'incorrect';
+          }
+        } else if (selectedAnswer === optIdx) {
+          optionClass = 'selected';
+        }
+
+        if (optionClass) btn.classList.add(optionClass);
+
+        btn.innerHTML = `
+          <span class="choice-letter">${letters[optIdx]}</span>
+          <span class="choice-text">${formatMarkdownCode(optText)}</span>
+        `;
+
+        btn.addEventListener('click', () => handleChoiceSelect(optIdx));
+        choicesList.appendChild(btn);
+      });
+
+      const expBox = document.getElementById('explanationBox');
+      if (quizMode === 'practice' && selectedAnswer !== undefined) {
+        expBox.classList.remove('hidden');
+        document.getElementById('explanationText').innerHTML = formatMarkdownCode(q.explanation);
+      } else {
+        expBox.classList.add('hidden');
+      }
+
+      if (currentIndex === 0) {
+        prevBtn.style.visibility = 'hidden';
+      } else {
+        prevBtn.style.visibility = 'visible';
+      }
+
+      if (currentIndex === total - 1) {
+        nextBtn.classList.add('hidden');
+        submitBtn.classList.remove('hidden');
+      } else {
+        nextBtn.classList.remove('hidden');
+        submitBtn.classList.add('hidden');
+      }
+    }
+
+    function handleChoiceSelect(optIdx) {
+      const q = questions[currentIndex];
+      if (quizMode === 'practice' && userAnswers[q.id] !== undefined) return;
+
+      userAnswers[q.id] = optIdx;
+      loadQuestion(currentIndex);
+    }
+
+    flagBtn.addEventListener('click', () => {
+      const q = questions[currentIndex];
+      if (flaggedQuestions.has(q.id)) {
+        flaggedQuestions.delete(q.id);
+      } else {
+        flaggedQuestions.add(q.id);
+      }
+      loadQuestion(currentIndex);
+    });
+
+    prevBtn.addEventListener('click', () => {
+      if (currentIndex > 0) loadQuestion(currentIndex - 1);
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (currentIndex < questions.length - 1) loadQuestion(currentIndex + 1);
+    });
+
+    submitBtn.addEventListener('click', finishQuiz);
+
+    gridToggleBtn.addEventListener('click', () => {
+      renderGridModal();
+      gridModal.classList.add('open');
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+      gridModal.classList.remove('open');
+    });
+
+    gridModal.addEventListener('click', (e) => {
+      if (e.target === gridModal) gridModal.classList.remove('open');
+    });
+
+    function renderGridModal() {
+      const gridContainer = document.getElementById('gridContainer');
+      gridContainer.innerHTML = '';
+
+      questions.forEach((q, idx) => {
+        const item = document.createElement('div');
+        item.className = 'grid-num';
+        if (idx === currentIndex) item.classList.add('current');
+        if (userAnswers[q.id] !== undefined) item.classList.add('answered');
+        if (flaggedQuestions.has(q.id)) item.classList.add('flagged');
+
+        item.textContent = idx + 1;
+        item.addEventListener('click', () => {
+          gridModal.classList.remove('open');
+          loadQuestion(idx);
+        });
+        gridContainer.appendChild(item);
+      });
+    }
+
+    function finishQuiz() {
+      stopTimer();
+
+      document.getElementById('quizScreen').classList.add('hidden');
+      document.getElementById('timerDisplay').classList.add('hidden');
+      document.getElementById('gridToggleBtn').classList.add('hidden');
+      document.getElementById('resultsScreen').classList.remove('hidden');
+
+      let correctCount = 0;
+      questions.forEach(q => {
+        if (userAnswers[q.id] === q.answer) {
+          correctCount++;
+        }
+      });
+
+      const total = questions.length;
+      const percentage = Math.round((correctCount / total) * 100);
+
+      document.getElementById('scoreNumber').textContent = `${percentage}%`;
+      document.getElementById('scoreDetail').textContent = `${correctCount} / ${total}`;
+
+      let rating = '';
+      let msg = '';
+      if (percentage >= 90) {
+        rating = '🌟 Exceptional Performance!';
+        msg = 'Outstanding work! You demonstrate a deep, mastery-level understanding of Python principles and syntax.';
+      } else if (percentage >= 75) {
+        rating = '👍 Strong Result!';
+        msg = 'Great job! You have a solid grasp of core Python concepts. Review missed items below to polish up.';
+      } else if (percentage >= 60) {
+        rating = '📈 Good Foundation!';
+        msg = 'You passed, but there are key gaps in your concepts. Review the detailed breakdown and explanations below.';
+      } else {
+        rating = '📚 Practice Needed';
+        msg = 'Keep studying! Focus on the concepts where you missed questions and try taking the practice quiz again.';
+      }
+
+      document.getElementById('scoreRating').textContent = rating;
+      document.getElementById('scoreMessage').textContent = msg;
+
+      renderSectionBreakdown();
+      document.getElementById('reviewContainer').classList.add('hidden');
+    }
+
+    function renderSectionBreakdown() {
+      const breakdownContainer = document.getElementById('sectionBreakdownContainer');
+      breakdownContainer.innerHTML = '<h3>Performance by Section</h3>';
+
+      const sectionsMap = {};
+      questions.forEach(q => {
+        if (!sectionsMap[q.section]) {
+          sectionsMap[q.section] = { total: 0, correct: 0 };
+        }
+        sectionsMap[q.section].total++;
+        if (userAnswers[q.id] === q.answer) {
+          sectionsMap[q.section].correct++;
+        }
+      });
+
+      for (const [sectionName, stats] of Object.entries(sectionsMap)) {
+        const secPct = Math.round((stats.correct / stats.total) * 100);
+        const row = document.createElement('div');
+        row.className = 'section-row';
+        row.innerHTML = `
+          <div class="section-meta">
+            <span>${sectionName}</span>
+            <span>${stats.correct}/${stats.total} (${secPct}%)</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" style="width: ${secPct}%;"></div>
+          </div>
+        `;
+        breakdownContainer.appendChild(row);
+      }
+    }
+
+    reviewAnswersBtn.addEventListener('click', () => {
+      const reviewContainer = document.getElementById('reviewContainer');
+      reviewContainer.classList.toggle('hidden');
+      if (!reviewContainer.classList.contains('hidden')) {
+        renderReviewCards('all');
+        reviewContainer.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+
+    restartBtn.addEventListener('click', () => {
+      document.getElementById('resultsScreen').classList.add('hidden');
+      document.getElementById('startScreen').classList.remove('hidden');
+    });
+
+    const pills = document.querySelectorAll('.filter-pills .pill');
+    pills.forEach(pill => {
+      pill.addEventListener('click', (e) => {
+        pills.forEach(p => p.classList.remove('active'));
+        e.target.classList.add('active');
+        renderReviewCards(e.target.dataset.filter);
+      });
+    });
+
+    function renderReviewCards(filter) {
+      const container = document.getElementById('reviewCardsList');
+      container.innerHTML = '';
+
+      const letters = ['A', 'B', 'C', 'D'];
+
+      questions.forEach((q, idx) => {
+        const userChoice = userAnswers[q.id];
+        const isCorrect = userChoice === q.answer;
+        const isFlagged = flaggedQuestions.has(q.id);
+
+        if (filter === 'correct' && !isCorrect) return;
+        if (filter === 'incorrect' && isCorrect) return;
+        if (filter === 'flagged' && !isFlagged) return;
+
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.style.marginBottom = '16px';
+
+        let choicesHtml = '';
+        q.options.forEach((opt, oIdx) => {
+          let optClass = '';
+          if (oIdx === q.answer) optClass = 'correct';
+          else if (oIdx === userChoice && !isCorrect) optClass = 'incorrect';
+
+          choicesHtml += `
+            <div class="choice-option ${optClass}" style="cursor: default;">
+              <span class="choice-letter">${letters[oIdx]}</span>
+              <span class="choice-text">${formatMarkdownCode(opt)}</span>
+            </div>
+          `;
+        });
+
+        const userStatusText = userChoice === undefined 
+          ? '<span style="color: var(--text-secondary);">Unanswered</span>'
+          : isCorrect 
+            ? '<span style="color: var(--correct);">Correct</span>' 
+            : '<span style="color: var(--incorrect);">Incorrect</span>';
+
+        card.innerHTML = `
+          <div class="question-header">
+            <span class="badge">${q.section} • Q${idx + 1}</span>
+            <span style="font-size: 0.9rem;">${isFlagged ? '★ Flagged • ' : ''}${userStatusText}</span>
+          </div>
+          <div class="question-text">${formatMarkdownCode(q.question)}</div>
+          <div class="choices-list">${choicesHtml}</div>
+          <div class="explanation-box" style="margin-bottom: 0;">
+            <div class="explanation-title">Explanation:</div>
+            <div>${formatMarkdownCode(q.explanation)}</div>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+  </script>
+</body>
+</html>
