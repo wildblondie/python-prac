@@ -858,6 +858,17 @@ Model B is preferred because its overall architecture, coordinate transformation
                 section.style.display = text.includes(query) ? '' : 'none';
             });
         }
+		// Auto-collapse mobile sidebar when any navigation link is clicked
+		document.addEventListener('DOMContentLoaded', () => {
+			const sidebar = document.getElementById('sidebar');
+			const navLinks = sidebar.querySelectorAll('a');
+			
+			navLinks.forEach(link => {
+				link.addEventListener('click', () => {
+					sidebar.classList.add('hidden');
+				});
+			});
+		});
     </script>
 </body>
 </html>
