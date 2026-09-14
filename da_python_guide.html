@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataAnnotation Python Assessment Master Guide</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        },
+                        accent: {
+                            500: '#10b981',
+                            600: '#059669',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'Consolas', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Prism.js Syntax Highlighting CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.1);
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #334155;
+        }
+
+        /* Prism Code Syntax Override */
+        code[class*="language-"],
+        pre[class*="language-"] {
+            font-family: 'Fira Code', monospace !important;
+            font-size: 0.75rem !important;
+            line-height: 1.5 !important;
+            margin: 0 !important;
+            border-radius: 0 0 0.75rem 0.75rem !important;
+        }
+
+        .dark code[class*="language-"],
+        .dark pre[class*="language-"] {
+            background: #090d16 !important;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 font-sans antialiased min-h-screen flex flex-col transition-colors duration-200 selection:bg-brand-500 selection:text-white">
+
+    <!-- TOP NAVBAR -->
+    <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-tr from-brand-600 to-accent-500 p-2 rounded-lg text-white font-bold text-xl shadow-lg shadow-brand-500/20">
+                    DA
+                </div>
+                <div>
+                    <span class="text-lg font-bold tracking-tight text-slate-900 dark:text-white block leading-none">DataAnnotation</span>
+                    <span class="text-xs font-medium text-brand-600 dark:text-brand-400">Python Assessment Portal</span>
+                </div>
+            </div>
+
+            <!-- Search Bar & Controls -->
+            <div class="flex items-center space-x-4">
+                <div class="relative hidden md:block w-64">
+                    <input type="text" id="searchInput" onkeyup="filterContent()" placeholder="Search guide topics..." 
+                        class="w-full bg-slate-100 dark:bg-slate-800 text-sm text-slate-800 dark:text-slate-200 rounded-lg pl-9 pr-4 py-2 border border-slate-300 dark:border-slate-700 focus:outline-none focus:border-brand-500 transition-colors">
+                    <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                </div>
+
+                <button id="themeToggle" onclick="toggleTheme()" class="p-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors" title="Toggle Dark/Light Mode">
+                    <svg id="sunIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                    <svg id="moonIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+                </button>
+
+                <!-- Mobile Menu Toggle -->
+                <button onclick="toggleMobileNav()" class="md:hidden p-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN WRAPPER -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-1 flex w-full">
+
+        <!-- SIDEBAR NAVIGATION -->
+        <aside id="sidebar" class="w-64 flex-shrink-0 hidden md:block py-6 border-r border-slate-200 dark:border-slate-800 pr-6 sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto">
+            <nav class="space-y-1 text-sm font-medium">
+                <div class="px-3 py-2 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Guide Overview</div>
+                <a href="#overview" class="nav-link flex items-center px-3 py-2 rounded-md hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">Overview & Format</a>
+                <a href="#patterns" class="nav-link flex items-center px-3 py-2 rounded-md hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">Test Problem Patterns</a>
+                
+                <div class="px-3 py-2 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-4">Interactive Lab</div>
+                <a href="#simulators" class="nav-link flex items-center px-3 py-2 rounded-md hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
+                    <span class="w-2 h-2 rounded-full bg-accent-500 mr-2"></span>
+                    Live Code Simulators
+                </a>
+
+                <div class="px-3 py-2 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-4">RLHF & Career</div>
+                <a href="#rlhf-work" class="nav-link flex items-center px-3 py-2 rounded-md hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">What RLHF Work Entails</a>
+                <a href="#worth-it" class="nav-link flex items-center px-3 py-2 rounded-md hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">Tech Snapshot & Market</a>
+                <a href="#async-rules" class="nav-link flex items-center px-3 py-2 rounded-md hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">Async Work & Timers</a>
+
+                <div class="px-3 py-2 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-4">Evaluation Mastery</div>
+                <a href="#rationales" class="nav-link flex items-center px-3 py-2 rounded-md hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">High-Scoring Rationales</a>
+                <a href="#sample-exercise" class="nav-link flex items-center px-3 py-2 rounded-md hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">Sample Exercise & Key</a>
+                <a href="#dsa-requirements" class="nav-link flex items-center px-3 py-2 rounded-md hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">DSA Scope & Preparation</a>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="flex-1 py-6 md:pl-8 space-y-12 max-w-4xl overflow-x-hidden">
+
+            <!-- HERO SECTION -->
+            <section id="overview" class="relative bg-white dark:bg-slate-800/80 p-8 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xl overflow-hidden transition-colors">
+                <div class="absolute right-0 top-0 -mr-16 -mt-16 w-64 h-64 bg-brand-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="flex flex-wrap items-center gap-2 mb-4">
+                    <span class="bg-brand-50 dark:bg-brand-500/20 text-brand-700 dark:text-brand-300 border border-brand-200 dark:border-brand-500/30 text-xs px-2.5 py-1 rounded-full font-semibold">Updated 2026 Edition</span>
+                    <span class="bg-emerald-50 dark:bg-accent-500/20 text-emerald-700 dark:text-accent-400 border border-emerald-200 dark:border-accent-500/30 text-xs px-2.5 py-1 rounded-full font-semibold">Pay Rate: $40 - $50+/hr</span>
+                    <span class="bg-purple-50 dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-500/30 text-xs px-2.5 py-1 rounded-full font-semibold">100% Remote / Async</span>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">DataAnnotation Python Assessment</h1>
+                <p class="mt-3 text-slate-600 dark:text-slate-300 leading-relaxed text-base md:text-lg">
+                    The DataAnnotation (DA) Python Assessment is an open-book, take-home coding challenge designed to test your ability to read unstructured data, write clean Python code, and output a specific result.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 pt-6 border-t border-slate-200 dark:border-slate-700/60">
+                    <div class="bg-slate-100 dark:bg-slate-900/60 p-4 rounded-xl border border-slate-200 dark:border-slate-700/50">
+                        <div class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Format</div>
+                        <div class="text-slate-900 dark:text-white font-medium mt-1">Un-proctored, open-book coding assignment</div>
+                    </div>
+                    <div class="bg-slate-100 dark:bg-slate-900/60 p-4 rounded-xl border border-slate-200 dark:border-slate-700/50">
+                        <div class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Environment</div>
+                        <div class="text-slate-900 dark:text-white font-medium mt-1">Local IDE (VS Code / Colab), submit via text box</div>
+                    </div>
+                    <div class="bg-slate-100 dark:bg-slate-900/60 p-4 rounded-xl border border-slate-200 dark:border-slate-700/50">
+                        <div class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Libraries</div>
+                        <div class="text-slate-900 dark:text-white font-medium mt-1">Standard Python (`sys`, `re`, `requests`, `bs4`)</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- COMMON TEST PATTERNS -->
+            <section id="patterns" class="space-y-6">
+                <div class="border-b border-slate-200 dark:border-slate-800 pb-3">
+                    <h2 class="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <svg class="w-6 h-6 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                        The 2 Most Common Test Problem Patterns
+                    </h2>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Pattern 1 Card -->
+                    <div class="bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/70 p-6 rounded-xl flex flex-col justify-between hover:border-brand-500/50 transition-colors shadow-sm">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <h3 class="font-bold text-lg text-slate-900 dark:text-white">1. Number-Word Decoding (Pyramid)</h3>
+                                <span class="text-xs bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 px-2.5 py-0.5 rounded-full">Pattern A</span>
+                            </div>
+                            <p class="text-sm text-slate-600 dark:text-slate-300 mb-4">
+                                Given lines containing numbers and words in random order (e.g., <code class="bg-slate-100 dark:bg-slate-900 px-1 py-0.5 rounded text-brand-600 dark:text-brand-400">3 love</code>, <code class="bg-slate-100 dark:bg-slate-900 px-1 py-0.5 rounded text-brand-600 dark:text-brand-400">1 I</code>, <code class="bg-slate-100 dark:bg-slate-900 px-1 py-0.5 rounded text-brand-600 dark:text-brand-400">6 dogs</code>, <code class="bg-slate-100 dark:bg-slate-900 px-1 py-0.5 rounded text-brand-600 dark:text-brand-400">2 like</code>).
+                            </p>
+                            <ul class="text-xs text-slate-600 dark:text-slate-300 space-y-2 mb-4 list-disc list-inside">
+                                <li><strong>Goal:</strong> Sort pairs by numbers, construct pyramid structure (line 1 has 1 number, line 2 has 2, line 3 has 3...).</li>
+                                <li><strong>Output:</strong> Extract words corresponding to the <strong>last number of each pyramid row</strong> (1, 3, 6, 10, 15...).</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Pattern 2 Card -->
+                    <div class="bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/70 p-6 rounded-xl flex flex-col justify-between hover:border-brand-500/50 transition-colors shadow-sm">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <h3 class="font-bold text-lg text-slate-900 dark:text-white">2. 2D Grid / Coordinate ASCII Art</h3>
+                                <span class="text-xs bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 px-2.5 py-0.5 rounded-full">Pattern B</span>
+                            </div>
+                            <p class="text-sm text-slate-600 dark:text-slate-300 mb-4">
+                                Given structured data containing rows of 3 elements: an <code class="bg-slate-100 dark:bg-slate-900 px-1 py-0.5 rounded text-brand-600 dark:text-brand-400">X</code> coordinate, a <code class="bg-slate-100 dark:bg-slate-900 px-1 py-0.5 rounded text-brand-600 dark:text-brand-400">Y</code> coordinate, and a <code class="bg-slate-100 dark:bg-slate-900 px-1 py-0.5 rounded text-brand-600 dark:text-brand-400">character</code> (like <code class="bg-slate-100 dark:bg-slate-900 px-1 py-0.5 rounded text-brand-600 dark:text-brand-400">█</code> or <code class="bg-slate-100 dark:bg-slate-900 px-1 py-0.5 rounded text-brand-600 dark:text-brand-400">*</code>).
+                            </p>
+                            <ul class="text-xs text-slate-600 dark:text-slate-300 space-y-2 mb-4 list-disc list-inside">
+                                <li><strong>Goal:</strong> Parse coordinates, dynamically construct a matrix matching <code class="bg-slate-100 dark:bg-slate-900 px-1 py-0.5 rounded text-brand-600 dark:text-brand-400">max_x + 1</code> and <code class="bg-slate-100 dark:bg-slate-900 px-1 py-0.5 rounded text-brand-600 dark:text-brand-400">max_y + 1</code>.</li>
+                                <li><strong>Output:</strong> Printing grid line-by-line visually spells out large uppercase letters or words.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pyramid Reference Code with Prism Syntax Highlighting -->
+                <div class="bg-slate-900 dark:bg-slate-950 rounded-xl border border-slate-700 dark:border-slate-800 overflow-hidden shadow-lg">
+                    <div class="bg-slate-800/90 dark:bg-slate-800/70 px-4 py-2 flex items-center justify-between border-b border-slate-700">
+                        <span class="text-xs font-mono text-slate-200 dark:text-slate-300">Pyramid Decoder Reference Implementation (Python 3)</span>
+                        <button onclick="copyCode('pyramidCode')" class="text-xs bg-slate-700 hover:bg-slate-600 text-slate-200 px-2.5 py-1 rounded transition-colors flex items-center gap-1">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h6a2 2 0 012 2v2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/></svg>
+                            Copy Code
+                        </button>
+                    </div>
+                    <pre><code id="pyramidCode" class="language-python">def decode_message(file_path):
+    word_map = {}
+    with open(file_path, 'r') as file:
+        for line in file:
+            parts = line.strip().split()
+            if len(parts) == 2:
+                word_map[int(parts[0])] = parts[1]
+
+    decoded_words = []
+    step = 1
+    current_num = 1
+    
+    # Pyramid end numbers follow formula: 1, 1+2=3, 3+3=6, 6+4=10...
+    while current_num in word_map:
+        decoded_words.append(word_map[current_num])
+        step += 1
+        current_num += step
+
+    return " ".join(decoded_words)</code></pre>
+                </div>
+            </section>
+
+            <!-- LIVE INTERACTIVE LAB -->
+            <section id="simulators" class="bg-white dark:bg-gradient-to-b dark:from-slate-800/80 dark:to-slate-900 border border-slate-200 dark:border-brand-500/30 p-6 rounded-2xl shadow-xl space-y-6 transition-colors">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="bg-accent-500 text-white dark:text-slate-900 text-xs font-bold px-2 py-0.5 rounded">INTERACTIVE TOOL</span>
+                        <h2 class="text-xl font-bold text-slate-900 dark:text-white">Live Algorithm Simulators</h2>
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Test data parsing and decoding logic right in your browser.</p>
+                </div>
+
+                <!-- Tabs -->
+                <div class="flex border-b border-slate-200 dark:border-slate-700 space-x-4">
+                    <button onclick="switchTab('pyramidTab')" id="tabBtn-pyramidTab" class="py-2 text-sm font-semibold border-b-2 border-brand-500 text-brand-600 dark:text-brand-400">Pyramid Decoder Lab</button>
+                    <button onclick="switchTab('gridTab')" id="tabBtn-gridTab" class="py-2 text-sm font-semibold border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200">Cartesian Grid Lab</button>
+                </div>
+
+                <!-- Tab 1: Pyramid Decoder -->
+                <div id="pyramidTab" class="space-y-4">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Input Data (Number Word)</label>
+                            <textarea id="pyramidInput" rows="7" class="w-full bg-slate-100 dark:bg-slate-950 font-mono text-xs text-slate-800 dark:text-slate-200 p-3 rounded-lg border border-slate-300 dark:border-slate-700 focus:outline-none focus:border-brand-500" placeholder="Paste sample text...">3 love
+6 dogs
+1 I
+2 like
+4 learning
+5 Python</textarea>
+                        </div>
+                        <div class="flex flex-col">
+                            <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Decoded Output</label>
+                            <div id="pyramidOutput" class="flex-1 bg-slate-100 dark:bg-slate-950 font-mono text-xs text-emerald-600 dark:text-emerald-400 p-3 rounded-lg border border-slate-300 dark:border-slate-700 whitespace-pre-wrap flex items-center justify-center text-center">
+                                Click "Run Pyramid Decoder" to view result
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="runPyramidDecoder()" class="bg-brand-600 hover:bg-brand-500 text-white font-medium text-sm px-4 py-2 rounded-lg transition-colors flex items-center gap-2 shadow-lg shadow-brand-500/20">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Run Pyramid Decoder
+                    </button>
+                </div>
+
+                <!-- Tab 2: Cartesian Grid Lab -->
+                <div id="gridTab" class="hidden space-y-4">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Coordinates Input (X Y Char)</label>
+                            <textarea id="gridInput" rows="7" class="w-full bg-slate-100 dark:bg-slate-950 font-mono text-xs text-slate-800 dark:text-slate-200 p-3 rounded-lg border border-slate-300 dark:border-slate-700 focus:outline-none focus:border-brand-500" placeholder="X Y Char">0 0 █
+1 0 █
+2 0 █
+0 1 █
+2 1 █
+0 2 █
+1 2 █
+2 2 █</textarea>
+                        </div>
+                        <div class="flex flex-col">
+                            <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">Rendered ASCII Canvas</label>
+                            <pre id="gridOutput" class="flex-1 bg-slate-100 dark:bg-slate-950 font-mono text-xs text-brand-600 dark:text-brand-300 p-3 rounded-lg border border-slate-300 dark:border-slate-700 overflow-auto whitespace-pre">Click "Render ASCII Grid" to generate grid</pre>
+                        </div>
+                    </div>
+                    <button onclick="runGridDecoder()" class="bg-brand-600 hover:bg-brand-500 text-white font-medium text-sm px-4 py-2 rounded-lg transition-colors flex items-center gap-2 shadow-lg shadow-brand-500/20">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                        Render ASCII Grid
+                    </button>
+                </div>
+            </section>
+
+            <!-- PASSING ASSESSMENT & RLHF -->
+            <section id="rlhf-work" class="space-y-6">
+                <div class="border-b border-slate-200 dark:border-slate-800 pb-3">
+                    <h2 class="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <svg class="w-6 h-6 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Passing the Assessment & Python RLHF Work
+                    </h2>
+                </div>
+
+                <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+                    Passing the DataAnnotation Python assessment directly opens access to <strong>RLHF (Reinforcement Learning from Human Feedback)</strong> tasks for AI coding models. Instead of building ML algorithms from scratch, your role is to act as a human evaluator and teacher to refine frontier AI models (like ChatGPT, Claude, and Gemini).
+                </p>
+
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-white dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700/60 p-5 rounded-xl space-y-2 shadow-sm">
+                        <div class="text-brand-600 dark:text-brand-400 font-semibold text-sm flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-brand-500"></span> Pairwise Code Comparison
+                        </div>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">Evaluate two candidate AI-generated Python scripts (Model A vs. Model B) in an IDE to verify functionality, edge cases, and best practices.</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700/60 p-5 rounded-xl space-y-2 shadow-sm">
+                        <div class="text-brand-600 dark:text-brand-400 font-semibold text-sm flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-brand-500"></span> Detailed Rationales
+                        </div>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">Write clear justifications explaining why one model's code is superior, highlighting syntax errors or inefficient O(n²) time complexity.</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700/60 p-5 rounded-xl space-y-2 shadow-sm">
+                        <div class="text-brand-600 dark:text-brand-400 font-semibold text-sm flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-brand-500"></span> SFT & Code Rewriting
+                        </div>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">If both AI responses contain bugs, write the corrected, optimized Python reference code yourself as a gold-standard benchmark.</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700/60 p-5 rounded-xl space-y-2 shadow-sm">
+                        <div class="text-brand-600 dark:text-brand-400 font-semibold text-sm flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-brand-500"></span> Red-Teaming & Stress-Testing
+                        </div>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">Craft complex coding prompts designed to test model limits, trap models into logic errors, or check code security vulnerabilities.</p>
+                    </div>
+                </div>
+
+                <!-- KEY DETAILS TABLE -->
+                <div class="bg-white dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
+                    <table class="w-full text-left text-sm text-slate-600 dark:text-slate-300">
+                        <thead class="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 uppercase text-xs">
+                            <tr>
+                                <th class="px-6 py-3">Feature</th>
+                                <th class="px-6 py-3">Details</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200 dark:divide-slate-700/60">
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30">
+                                <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">Pay Rate</td>
+                                <td class="px-6 py-4 text-emerald-600 dark:text-emerald-400 font-bold">$40 / hour and up (vs $20–$25/hr for non-technical tasks)</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30">
+                                <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">Work Structure</td>
+                                <td class="px-6 py-4">Fully remote & flexible. Pick active projects from a dashboard and work as desired.</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30">
+                                <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">Technical Focus</td>
+                                <td class="px-6 py-4">Execution accuracy, instruction following, data manipulation, and edge-case testing over advanced ML theory.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- IS IT WORTH TAKING? -->
+            <section id="worth-it" class="space-y-6">
+                <div class="border-b border-slate-200 dark:border-slate-800 pb-3">
+                    <h2 class="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <svg class="w-6 h-6 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Is It Worth Taking the Assessment?
+                    </h2>
+                </div>
+
+                <div class="bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-500/30 p-5 rounded-xl">
+                    <h3 class="text-emerald-800 dark:text-emerald-300 font-bold text-lg mb-1">Verdict: Yes, Absolutely</h3>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                        The test is free, takes 1 to 2 hours, and grants access to high-paying remote RLHF projects. Treat DataAnnotation as a flexible side income stream, as project volumes fluctuate based on client demand.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white dark:bg-slate-800/40 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                        <h3 class="font-bold text-slate-900 dark:text-white text-base mb-3">Job Prospects in 2026</h3>
+                        <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-300 list-disc list-inside">
+                            <li><strong>Sustained Demand:</strong> Frontier labs (OpenAI, Anthropic, Google DeepMind) spend heavily benchmarking coding models.</li>
+                            <li><strong>Focus on Judgment:</strong> AI writes basic Python easily; human roles focus on subtle edge cases, concurrency, and security.</li>
+                            <li><strong>Highest Paying Sectors:</strong> Advanced systems RLHF and security red-teaming reach <strong>$60 to $150+/hour</strong>.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800/40 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                        <h3 class="font-bold text-slate-900 dark:text-white text-base mb-3">Maximizing Your Earnings</h3>
+                        <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-300 list-disc list-inside">
+                            <li><strong>Multi-platform Strategy:</strong> Pair DA with platforms like Outlier.ai, Mercor, and Scale AI.</li>
+                            <li><strong>Rationale Clarity:</strong> Clearly detail <em>why</em> code fails with technical specificity (e.g., $O(n^2)$ time complexity).</li>
+                            <li><strong>Career Stepping-Stone:</strong> Builds rapid debugging and code-review skills for senior software roles.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ASYNCHRONOUS WORK -->
+            <section id="async-rules" class="space-y-6">
+                <div class="border-b border-slate-200 dark:border-slate-800 pb-3">
+                    <h2 class="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <svg class="w-6 h-6 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        DataAnnotation Asynchronous Work Model
+                    </h2>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="bg-white dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                        <div class="text-brand-600 dark:text-brand-400 font-bold text-sm mb-1">100% Flexible Hours</div>
+                        <p class="text-xs text-slate-600 dark:text-slate-300">Work at 2 AM or 2 PM. No required weekly minimums or mandatory shifts.</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                        <div class="text-brand-600 dark:text-brand-400 font-bold text-sm mb-1">No Live Supervision</div>
+                        <p class="text-xs text-slate-600 dark:text-slate-300">No daily stand-ups, Zoom calls, or real-time managers checking screens.</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                        <div class="text-brand-600 dark:text-brand-400 font-bold text-sm mb-1">Self-Paced Task Pools</div>
+                        <p class="text-xs text-slate-600 dark:text-slate-300">Claim tasks from global pools, complete them, log hours, and submit.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800/40 p-5 rounded-xl border border-slate-200 dark:border-slate-700 space-y-4 shadow-sm">
+                    <h3 class="text-slate-900 dark:text-white font-bold text-base">Task Timers & Rules</h3>
+                    <div class="grid md:grid-cols-2 gap-4 text-xs text-slate-600 dark:text-slate-300">
+                        <div class="space-y-2">
+                            <p class="font-semibold text-slate-800 dark:text-slate-100">Task Timer Window:</p>
+                            <p>Coding tasks typically provide a <strong>2 to 4+ hour countdown timer</strong> per task. This represents maximum buffer time, not expected completion duration (most tasks take 45-90 minutes).</p>
+                        </div>
+                        <div class="space-y-2">
+                            <p class="font-semibold text-slate-800 dark:text-slate-100">Timer Rules & Expiration:</p>
+                            <p>Timers <strong>cannot be paused</strong>. If the timer hits zero before submission, work is lost and returned to the pool.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- HIGH-SCORING RATIONALES -->
+            <section id="rationales" class="space-y-6">
+                <div class="border-b border-slate-200 dark:border-slate-800 pb-3">
+                    <h2 class="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <svg class="w-6 h-6 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                        High-Scoring Rationales Blueprint
+                    </h2>
+                </div>
+
+                <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                    High scores depend on concrete technical evidence: IDE execution logs, explicit line-by-line error identification, and objective complexity analysis.
+                </p>
+
+                <!-- Core Elements Checklist -->
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-white dark:bg-slate-800/40 p-4 rounded-lg border border-slate-200 dark:border-slate-700/80 shadow-sm">
+                        <div class="font-semibold text-slate-900 dark:text-white text-xs mb-1">1. Definitive Verdict First</div>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">State clearly which model is better in your opening sentence without ambiguous language.</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800/40 p-4 rounded-lg border border-slate-200 dark:border-slate-700/80 shadow-sm">
+                        <div class="font-semibold text-slate-900 dark:text-white text-xs mb-1">2. Empirical Test Evidence</div>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Explicitly detail test inputs, expected output, and actual outputs from your local IDE.</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800/40 p-4 rounded-lg border border-slate-200 dark:border-slate-700/80 shadow-sm">
+                        <div class="font-semibold text-slate-900 dark:text-white text-xs mb-1">3. Line-Level Diagnostics</div>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Point out exact line numbers, shallow copy mutations, or index out-of-bound errors.</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800/40 p-4 rounded-lg border border-slate-200 dark:border-slate-700/80 shadow-sm">
+                        <div class="font-semibold text-slate-900 dark:text-white text-xs mb-1">4. Complexity & Style Audit</div>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Evaluate Big-O runtimes ($O(n)$ vs $O(n^2)$) and PEP 8 formatting standards.</p>
+                    </div>
+                </div>
+
+                <!-- Template Code Block -->
+                <div class="bg-slate-900 dark:bg-slate-950 rounded-xl border border-slate-700 dark:border-slate-800 overflow-hidden shadow-lg">
+                    <div class="bg-slate-800/90 dark:bg-slate-800/70 px-4 py-2 flex items-center justify-between border-b border-slate-700">
+                        <span class="text-xs font-mono text-slate-200 dark:text-slate-300">Standard Rationale Structure Template</span>
+                        <button onclick="copyCode('rationaleTemplate')" class="text-xs bg-slate-700 hover:bg-slate-600 text-slate-200 px-2.5 py-1 rounded transition-colors">Copy Template</button>
+                    </div>
+                    <pre><code id="rationaleTemplate" class="language-markdown">[VERDICT]
+Model A is significantly better than Model B. Model A provides a fully working, optimal solution that correctly handles edge cases, whereas Model B contains a logical bug.
+
+[PROMPT CONSTRAINT & INSTRUCTION FOLLOWING]
+- Model A: Followed all constraints, including standard-library-only restrictions and output formatting.
+- Model B: Failed formatting constraint by printing raw lists instead of a space-separated string.
+
+[MODEL A EVALUATION]
+- Execution: Ran cleanly in Python 3.11 across all edge-case inputs.
+- Logic & Correctness: Correctly implemented matrix bounds. Tested with coords = [(0,1), (2,-3)].
+- Complexity & Style: Optimal O(N) time complexity with clean variable names.
+
+[MODEL B EVALUATION]
+- Execution: Fails on edge cases.
+- Logic & Correctness: Indexation error on line 14 (`grid[x][y]`). Used `list.copy()` on line 8 creating a shallow copy.
+- Complexity & Style: Suboptimal O(N^2) runtime due to nested loop lookups.
+
+[CONCLUSION / REASON FOR PREFERENCE]
+Model A is preferred because it executes correctly without runtime errors and runs in linear time.</code></pre>
+                </div>
+            </section>
+
+            <!-- SAMPLE EXERCISE -->
+            <section id="sample-exercise" class="space-y-6">
+                <div class="border-b border-slate-200 dark:border-slate-800 pb-3">
+                    <h2 class="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <svg class="w-6 h-6 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                        Sample Practice Exercise & Key
+                    </h2>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800/60 p-5 rounded-xl border border-slate-200 dark:border-slate-700 space-y-3 shadow-sm">
+                    <h3 class="text-slate-900 dark:text-white font-bold text-sm">Task Scenario: Cartesian Grid Decoder</h3>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Write a Python function <code class="bg-slate-100 dark:bg-slate-900 px-1 rounded text-brand-600 dark:text-brand-400">parse_grid_message(data_input: str) -> str</code> that parses a multi-line input string containing 2D coordinate pairs and characters, returning a formatted ASCII grid string.
+                    </p>
+                    <ul class="text-xs text-slate-600 dark:text-slate-300 list-disc list-inside space-y-1">
+                        <li>Each line contains: <code class="bg-slate-100 dark:bg-slate-900 px-1 rounded text-brand-600 dark:text-brand-400">X_coordinate Y_coordinate Character</code>.</li>
+                        <li>(0, 0) is at the <strong>bottom-left corner</strong> (increasing Y moves up).</li>
+                        <li>Blank grid spaces must be populated with single spaces <code class="bg-slate-100 dark:bg-slate-900 px-1 rounded text-brand-600 dark:text-brand-400">' '</code>.</li>
+                        <li>Must <strong>return</strong> the grid string (rows separated by <code class="bg-slate-100 dark:bg-slate-900 px-1 rounded text-brand-600 dark:text-brand-400">\n</code>). Do not print to stdout.</li>
+                    </ul>
+                </div>
+
+                <!-- Model Code Comparisons with Prism Syntax Highlighting -->
+                <div class="grid md:grid-cols-2 gap-4">
+                    <!-- Model A Code -->
+                    <div class="bg-slate-900 dark:bg-slate-950 border border-slate-700 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+                        <div class="bg-slate-800/90 dark:bg-slate-800 px-3 py-2 text-xs font-semibold text-slate-200 dark:text-slate-300 flex justify-between items-center border-b border-slate-700">
+                            <span>Model A Script</span>
+                            <span class="text-red-400 text-xs font-mono">IndexError / Direct Print</span>
+                        </div>
+                        <pre><code id="modelACode" class="language-python">def parse_grid_message(data_input: str) -> str:
+    lines = [line.strip() for line in data_input.strip().split('\n') if line.strip()]
+    parsed_data = []
+    
+    max_x = 0
+    max_y = 0
+    
+    for line in lines:
+        parts = line.split()
+        x, y, char = int(parts[0]), int(parts[1]), parts[2]
+        parsed_data.append((x, y, char))
+        if x > max_x: max_x = x
+        if y > max_y: max_y = y
+        
+    # Create grid based on maximum dimensions
+    grid = [[' ' for _ in range(max_x)] for _ in range(max_y)]
+    
+    # Place characters on grid
+    for x, y, char in parsed_data:
+        grid[y][x] = char
+        
+    # Output grid string
+    for row in grid:
+        print("".join(row))</code></pre>
+                    </div>
+
+                    <!-- Model B Code -->
+                    <div class="bg-slate-900 dark:bg-slate-950 border border-slate-700 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+                        <div class="bg-slate-800/90 dark:bg-slate-800 px-3 py-2 text-xs font-semibold text-slate-200 dark:text-slate-300 flex justify-between items-center border-b border-slate-700">
+                            <span>Model B Script</span>
+                            <span class="text-amber-400 text-xs font-mono">Shallow Copy Bug</span>
+                        </div>
+                        <pre><code id="modelBCode" class="language-python">def parse_grid_message(data_input: str) -> str:
+    lines = [line.strip() for line in data_input.strip().split('\n') if line.strip()]
+    if not lines:
+        return ""
+
+    parsed_data = []
+    for line in lines:
+        parts = line.split()
+        parsed_data.append((int(parts[0]), int(parts[1]), parts[2]))
+
+    max_x = max(item[0] for item in parsed_data)
+    max_y = max(item[1] for item in parsed_data)
+
+    width = max_x + 1
+    height = max_y + 1
+
+    # Initialize grid matrix
+    grid = [[' '] * width] * height
+
+    # Map coordinates (0,0 at bottom-left)
+    for x, y, char in parsed_data:
+        row_idx = max_y - y
+        grid[row_idx][x] = char
+
+    return "\n".join("".join(row) for row in grid)</code></pre>
+                    </div>
+                </div>
+
+                <!-- Model Solution Key -->
+                <div class="bg-slate-900 dark:bg-slate-950 border border-brand-500/40 rounded-xl overflow-hidden shadow-sm">
+                    <div class="bg-brand-900/40 px-4 py-2 text-xs font-semibold text-brand-300 border-b border-brand-500/30">
+                        Official Answer Key & High-Scoring Rationale Model
+                    </div>
+                    <pre><code id="rationaleKey" class="language-markdown">[VERDICT]
+Model B is preferred over Model A, but both models contain critical bugs that require correction. Model B follows prompt constraints and correctly maps Cartesian coordinates, whereas Model A fails multiple prompt requirements and raises runtime IndexErrors.
+
+[PROMPT CONSTRAINT & INSTRUCTION FOLLOWING]
+- Model A: FAILED. Model A prints the grid directly to stdout instead of returning a string as requested. Additionally, it fails to map (0,0) to the bottom-left corner, placing (0,0) at the top-left instead.
+- Model B: FOLLOWED. Model B correctly returns a string formatted with newlines and handles the empty input edge case gracefully.
+
+[MODEL A EVALUATION]
+- Execution & Correctness: FAILS with an `IndexError: list assignment index out of range`. It initializes the grid with dimensions `range(max_x)` instead of `max_x + 1`. A coordinate at `(max_x, max_y)` attempts to access an out-of-bounds index.
+- Orientation Logic: Incorrect. Placing `grid[y][x] = char` treats (0,0) as top-left.
+
+[MODEL B EVALUATION]
+- Execution & Correctness: FAILS logically due to shallow copying during grid initialization (`[[' '] * width] * height`). Multiplying outer list references causes every row to point to the exact same list in memory. Assigning `grid[row_idx][x] = char` mutates column `x` across ALL rows simultaneously.
+- Orientation Logic: Correctly calculates row indices via `row_idx = max_y - y`.
+
+[CONCLUSION / REASON FOR PREFERENCE]
+Model B is preferred because its overall architecture, coordinate transformation math, and return compliance match requirements. Fixing Model B only requires changing grid initialization to `[[' ' for _ in range(width)] for _ in range(height)]` (deep copy).</code></pre>
+                </div>
+            </section>
+
+            <!-- DSA REQUIREMENTS & HOW TO PREPARE -->
+            <section id="dsa-requirements" class="space-y-6">
+                <div class="border-b border-slate-200 dark:border-slate-800 pb-3">
+                    <h2 class="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <svg class="w-6 h-6 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                        Data Structures & Algorithms Scope
+                    </h2>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800/40 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <h3 class="text-rose-600 dark:text-rose-400 font-bold text-sm mb-2 flex items-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        What is NOT on the Test
+                    </h3>
+                    <p class="text-xs text-slate-600 dark:text-slate-300">
+                        You will <strong>NOT</strong> be asked to write complex data structures from scratch (Red-Black Trees, Heaps, Graph traversals like BFS/DFS) or heavy algorithmic proofs. Standard computer science LeetCode Hard topics are absent.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="bg-white dark:bg-slate-800/40 p-4 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2 shadow-sm">
+                        <h4 class="text-brand-600 dark:text-brand-400 font-bold text-xs">1. Practical Data Structures</h4>
+                        <ul class="text-xs text-slate-600 dark:text-slate-300 space-y-1 list-disc list-inside">
+                            <li>2D Lists / Matrices</li>
+                            <li>Dictionaries & `Counter`</li>
+                            <li>Sets & Coordinate Tuples `(x, y)`</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800/40 p-4 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2 shadow-sm">
+                        <h4 class="text-brand-600 dark:text-brand-400 font-bold text-xs">2. Algorithmic Logic</h4>
+                        <ul class="text-xs text-slate-600 dark:text-slate-300 space-y-1 list-disc list-inside">
+                            <li>Cartesian Index Transformation</li>
+                            <li>String Parsing & Regex</li>
+                            <li>Pyramid & Grid Pattern Decoding</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800/40 p-4 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2 shadow-sm">
+                        <h4 class="text-brand-600 dark:text-brand-400 font-bold text-xs">3. LLM Code Review</h4>
+                        <ul class="text-xs text-slate-600 dark:text-slate-300 space-y-1 list-disc list-inside">
+                            <li>Spotting Shallow Copy Traps</li>
+                            <li>Finding Off-By-One Errors</li>
+                            <li>Articulating Bug Rationales</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-brand-50 to-white dark:from-brand-900/30 dark:to-slate-800 p-5 rounded-xl border border-brand-200 dark:border-brand-500/30 shadow-sm">
+                    <h3 class="text-slate-900 dark:text-white font-bold text-sm mb-2">Preparation Action Plan</h3>
+                    <ol class="text-xs text-slate-600 dark:text-slate-300 space-y-2 list-decimal list-inside">
+                        <li><strong>Master 2D Grids:</strong> Practice constructing 2D matrices from coordinate tuples and printing line-by-line.</li>
+                        <li><strong>Master String Parsing:</strong> Get comfortable using <code class="bg-slate-100 dark:bg-slate-900 px-1 rounded text-brand-600 dark:text-brand-400">.split()</code>, <code class="bg-slate-100 dark:bg-slate-900 px-1 rounded text-brand-600 dark:text-brand-400">.strip()</code>, and basic regex.</li>
+                        <li><strong>Prioritize Accuracy:</strong> DataAnnotation values strict instruction-following and edge-case handling far more than typing speed.</li>
+                    </ol>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 mt-16 py-6 text-center text-xs text-slate-500 dark:text-slate-400 transition-colors">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>DataAnnotation Python Assessment Guide — Interactive Reference Platform</p>
+        </div>
+    </footer>
+
+    <!-- Prism.js Syntax Highlighting JavaScript via CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markdown.min.js"></script>
+
+    <!-- INTERACTIVE JAVASCRIPT -->
+    <script>
+        // Synchronize Theme Icons and HTML Class on Page Load
+        (function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const sunIcon = document.getElementById('sunIcon');
+            const moonIcon = document.getElementById('moonIcon');
+            
+            if (savedTheme === 'light') {
+                document.documentElement.classList.remove('dark');
+                if (sunIcon && moonIcon) {
+                    sunIcon.classList.remove('hidden');
+                    moonIcon.classList.add('hidden');
+                }
+            } else {
+                document.documentElement.classList.add('dark');
+                if (sunIcon && moonIcon) {
+                    sunIcon.classList.add('hidden');
+                    moonIcon.classList.remove('hidden');
+                }
+            }
+        })();
+
+        // Theme Toggle (Dark / Light) Function
+        function toggleTheme() {
+            const html = document.documentElement;
+            const sunIcon = document.getElementById('sunIcon');
+            const moonIcon = document.getElementById('moonIcon');
+
+            const isDark = html.classList.toggle('dark');
+
+            if (isDark) {
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Copy Code Functionality
+        function copyCode(elementId) {
+            const codeText = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(codeText).then(() => {
+                alert('Code copied to clipboard!');
+            });
+        }
+
+        // Tab Switcher
+        function switchTab(tabId) {
+            document.getElementById('pyramidTab').classList.add('hidden');
+            document.getElementById('gridTab').classList.add('hidden');
+            
+            document.getElementById('tabBtn-pyramidTab').className = 'py-2 text-sm font-semibold border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200';
+            document.getElementById('tabBtn-gridTab').className = 'py-2 text-sm font-semibold border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200';
+
+            document.getElementById(tabId).classList.remove('hidden');
+            document.getElementById('tabBtn-' + tabId).className = 'py-2 text-sm font-semibold border-b-2 border-brand-500 text-brand-600 dark:text-brand-400';
+        }
+
+        // Live Pyramid Decoder Simulator
+        function runPyramidDecoder() {
+            const input = document.getElementById('pyramidInput').value;
+            const lines = input.trim().split('\n');
+            const wordMap = {};
+
+            lines.forEach(line => {
+                const parts = line.trim().split(/\s+/);
+                if (parts.length >= 2) {
+                    const num = parseInt(parts[0], 10);
+                    const word = parts.slice(1).join(' ');
+                    if (!isNaN(num)) {
+                        wordMap[num] = word;
+                    }
+                }
+            });
+
+            const decoded = [];
+            let step = 1;
+            let currentNum = 1;
+
+            while (wordMap[currentNum]) {
+                decoded.push(wordMap[currentNum]);
+                step += 1;
+                currentNum += step;
+            }
+
+            const result = decoded.join(' ');
+            document.getElementById('pyramidOutput').innerText = result ? result : 'No valid pyramid pattern found in input.';
+        }
+
+        // Live Grid Renderer Simulator
+        function runGridDecoder() {
+            const input = document.getElementById('gridInput').value;
+            const lines = input.trim().split('\n').filter(l => l.trim());
+            if (!lines.length) {
+                document.getElementById('gridOutput').innerText = "";
+                return;
+            }
+
+            const parsedData = [];
+            let maxX = 0;
+            let maxY = 0;
+
+            lines.forEach(line => {
+                const parts = line.trim().split(/\s+/);
+                if (parts.length >= 3) {
+                    const x = parseInt(parts[0], 10);
+                    const y = parseInt(parts[1], 10);
+                    const char = parts[2];
+                    if (!isNaN(x) && !isNaN(y)) {
+                        parsedData.push({x, y, char});
+                        if (x > maxX) maxX = x;
+                        if (y > maxY) maxY = y;
+                    }
+                }
+            });
+
+            const width = maxX + 1;
+            const height = maxY + 1;
+
+            // Matrix initialization with deep copy logic
+            const grid = Array.from({ length: height }, () => Array(width).fill(' '));
+
+            parsedData.forEach(({x, y, char}) => {
+                const rowIdx = maxY - y;
+                grid[rowIdx][x] = char;
+            });
+
+            const rendered = grid.map(row => row.join('')).join('\n');
+            document.getElementById('gridOutput').innerText = rendered;
+        }
+
+        // Mobile Nav Toggle
+        function toggleMobileNav() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('hidden');
+        }
+
+        // Content Search Filter
+        function filterContent() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const sections = document.querySelectorAll('main > section');
+
+            sections.forEach(section => {
+                const text = section.innerText.toLowerCase();
+                section.style.display = text.includes(query) ? '' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>
